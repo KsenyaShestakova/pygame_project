@@ -11,7 +11,7 @@ class Settings(pygame.sprite.Sprite):
         super().__init__(settings_spr, all_sprites)
         self.image = pygame.transform.scale(load_image('n.png'), (50, 50))
         self.rect = self.image.get_rect().move(
-            tile_width + pos_x, tile_height + pos_y)
+            tile_width * pos_x, tile_height * pos_y)
         self.is_set = False
 
     def update(self, *args):
@@ -32,7 +32,7 @@ class BtnStart(pygame.sprite.Sprite):
         tile_width, tile_height = self.image_load.get_width(), self.image_load.get_height()
         self.image = pygame.transform.scale(self.image_load, (50, 50))
         self.rect = self.image_load.get_rect().move(
-            tile_width + pos_x, tile_height + pos_y)
+            tile_width * pos_x, tile_height * pos_y)
         self.is_st = False
 
     def update(self, *args):
