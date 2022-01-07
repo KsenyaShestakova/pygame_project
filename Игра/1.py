@@ -9,21 +9,26 @@ from file_with_const import size, HEIGHT, WIDTH
 class Settings(pygame.sprite.Sprite):
     def __init__(self, pos_x, pos_y):
         super().__init__(settings_spr, all_sprites)
-        self.image = pygame.transform.scale(load_image('BUTTON_settings.png'), (50, 50))
+        self.image_load = load_image('BUTTON_settings.png')
+        self.image = pygame.transform.scale(self.image_load, (50, 50))
+        self.change_img = load_image('BUTTON_settings.png')
         self.rect = self.image.get_rect().move(pos_x, pos_y)
         self.mask = pygame.mask.from_surface(self.image)
         self.is_set = False
 
     def update(self, *args):
-        if args and args[0].type == pygame.MOUSEBUTTONDOWN and \
-                self.rect.collidepoint(args[0].pos):
-            self.is_set = True
-            print(0)
-        """elif args and self.rect.collidepoint(args[0].pos):
-            self.image = pygame.transform.scale(load_image('BUTTON_settings_changes.png'), (50, 50))
-        else:
-            self.image = pygame.transform.scale(load_image('BUTTON_settings.png'), (50, 50))
-        """
+        try:
+            if args and args[0].type == pygame.MOUSEBUTTONDOWN and \
+                    self.rect.collidepoint(args[0].pos):
+                self.is_set = True
+                print(0)
+            elif args and self.rect.collidepoint(args[0].pos):
+                self.image = pygame.transform.scale(self.change_img, (50, 50))
+                print(5)
+            else:
+                self.image = pygame.transform.scale(self.image_load, (50, 50))
+        except AttributeError:
+            print('Вот где была ошибка.....')  # ладно всё равно не работает так как надо
 
     def is_s(self):
         return self.is_set
@@ -33,15 +38,24 @@ class BtnStart(pygame.sprite.Sprite):
     def __init__(self, name, pos_x, pos_y):
         super().__init__(settings_spr, all_sprites)
         self.image_load = load_image(name)
+        self.change_img = load_image(name.split('.')[0] + '_change.' + name.split('.')[1])
         self.image = pygame.transform.scale(self.image_load, (350, 250))
         self.rect = self.image.get_rect().move(pos_x, pos_y)
-        self.is_st = 0
+        self.is_st = False
 
     def update(self, *args):
-        if args and args[0].type == pygame.MOUSEBUTTONDOWN and \
-                self.rect.collidepoint(args[0].pos):
-            self.is_st += 1
-            print(1)
+        try:
+            if args and args[0].type == pygame.MOUSEBUTTONDOWN and \
+                    self.rect.collidepoint(args[0].pos):
+                self.is_st = True
+                print(0)
+            elif args and self.rect.collidepoint(args[0].pos):
+                self.image = pygame.transform.scale(self.image_load, (350, 250))
+                print(5)
+            else:
+                self.image = pygame.transform.scale(self.change_img, (350, 250))
+        except AttributeError:
+            print('Вот где была ошибка.....')
 
     def is_start(self):
         return self.is_st
