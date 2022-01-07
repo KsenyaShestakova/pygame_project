@@ -9,17 +9,21 @@ from file_with_const import size, HEIGHT, WIDTH
 class Settings(pygame.sprite.Sprite):
     def __init__(self, pos_x, pos_y):
         super().__init__(settings_spr, all_sprites)
-        self.image = pygame.transform.scale(load_image('n.png'), (50, 50))
-        self.rect = self.image.get_rect().move(
-            tile_width * pos_x, tile_height * pos_y)
+        self.image = pygame.transform.scale(load_image('BUTTON_settings.png'), (50, 50))
+        self.rect = self.image.get_rect().move(pos_x, pos_y)
+        self.mask = pygame.mask.from_surface(self.image)
         self.is_set = False
 
     def update(self, *args):
         if args and args[0].type == pygame.MOUSEBUTTONDOWN and \
                 self.rect.collidepoint(args[0].pos):
             self.is_set = True
-            self.image = pygame.transform.scale(load_image('n.png'), (50, 50))
             print(0)
+        """elif args and self.rect.collidepoint(args[0].pos):
+            self.image = pygame.transform.scale(load_image('BUTTON_settings_changes.png'), (50, 50))
+        else:
+            self.image = pygame.transform.scale(load_image('BUTTON_settings.png'), (50, 50))
+        """
 
     def is_s(self):
         return self.is_set
@@ -29,17 +33,14 @@ class BtnStart(pygame.sprite.Sprite):
     def __init__(self, name, pos_x, pos_y):
         super().__init__(settings_spr, all_sprites)
         self.image_load = load_image(name)
-        tile_width, tile_height = self.image_load.get_width(), self.image_load.get_height()
-        self.image = pygame.transform.scale(self.image_load, (50, 50))
-        self.rect = self.image_load.get_rect().move(
-            tile_width * pos_x, tile_height * pos_y)
-        self.is_st = False
+        self.image = pygame.transform.scale(self.image_load, (350, 250))
+        self.rect = self.image.get_rect().move(pos_x, pos_y)
+        self.is_st = 0
 
     def update(self, *args):
         if args and args[0].type == pygame.MOUSEBUTTONDOWN and \
                 self.rect.collidepoint(args[0].pos):
-            self.image = pygame.transform.scale(self.image_load, (50, 50))
-            self.is_st = True
+            self.is_st += 1
             print(1)
 
     def is_start(self):
@@ -51,8 +52,8 @@ def start_screen():
     fon = pygame.transform.scale(load_image('fon.png'), (WIDTH, HEIGHT))
     screen.blit(fon, (0, 0))
     settings = Settings(0, 0)
-    new_game = BtnStart('new_game.png', 700, 200)
-    old_game = BtnStart('prodolzhit_igru.png', 700, 500)
+    new_game = BtnStart('BUTTON_new_game.png', 700, 200)
+    old_game = BtnStart('BUTTON_old_game.png', 700, 500)
     settings_spr.draw(screen)
     btns.draw(screen)
     while True:
@@ -61,22 +62,63 @@ def start_screen():
             if event.type == pygame.QUIT:
                 terminate()
             elif event.type == pygame.KEYDOWN or event.type == pygame.MOUSEBUTTONDOWN:
-                pass
 
                 if settings.is_s():
                     print('settings')
+                    window_with_settings()
+                    settings.is_set = False
 
-                if new_game.is_start():
+                if new_game.is_start() and settings.is_s() is False:
                     return print('new game')
 
-                if old_game.is_start():
+                if old_game.is_start() and settings.is_s() is False:
                     return print('old game')
         pygame.display.flip()
         clock.tick(FPS)
 
 
-def window_with_settings():
-    pass
+def window_with_settings():  # при закрытии is_s() возвращает False
+    dr_set = pygame.draw.rect(screen, 'black', (WIDTH // 5, HEIGHT // 5, WIDTH // 5 * 3, HEIGHT // 5 * 3))
+    while True:
+        for event in pygame.event.get():
+
+            if event.type == pygame.QUIT:
+                terminate()
+            elif event.type == pygame.MOUSEBUTTONDOWN:
+                print(9)
+
+                return
+            """elif event.type == pygame.KEYDOWN or event.type == pygame.MOUSEBUTTONDOWN:
+
+                if settings.is_s():
+                    print('settings')
+                    window_with_settings()
+                    settings.is_set = False
+
+                if new_game.is_start() and settings.is_s() is False:
+                    return print('new game')
+
+                if old_game.is_start() and settings.is_s() is False:
+                    return print('old game')"""
+        pygame.display.flip()
+        clock.tick(FPS)
+
+
+class SettingsWindow(pygame.sprite.Sprite):
+    def __init__(self, name, pos_x, pos_y):
+        super().__init__(settings_spr, all_sprites)
+        self.image_load = load_image(name)
+        tile_width, tile_height = self.image_load.get_width(), self.image_load.get_height()
+        self.image = pygame.transform.scale(self.image_load, (100, 50))
+        self.rect = self.image.get_rect().move(
+            tile_width + pos_x, tile_height + pos_y)
+        self.is_st = 0
+
+    def update(self, *args):
+        if args and args[0].type == pygame.MOUSEBUTTONDOWN and \
+                self.rect.collidepoint(args[0].pos):
+            self.is_st += 1
+            print(1)
 
 
 def terminate():
