@@ -36,7 +36,7 @@ class Settings(pygame.sprite.Sprite):
 
 class BtnStart(pygame.sprite.Sprite):
     def __init__(self, name, pos_x, pos_y):
-        super().__init__(settings_spr, all_sprites)
+        super().__init__(btns, all_sprites)
         self.image_load = load_image(name)
         self.change_img = load_image(name.split('.')[0] + '_change.' + name.split('.')[1])
         self.image = pygame.transform.scale(self.image_load, (350, 250))
@@ -216,11 +216,11 @@ def generate_level(level):
     new_player, x, y = None, None, None
     for y in range(len(level)):
         for x in range(len(level[y])):
-            if level[y][x] == '.':
+            if level[y][x] in '.@':
                 Tile('empty', x, y)
-            elif level[y][x] == '#':
-                Tile('wall', x, y)
-            elif level[y][x] == '@':
+            elif level[y][x] in '1230#':
+                Tile(str(level[y][x]), x, y)
+            elif level[y][x] == '?':
                 Tile('empty', x, y)
                 new_player = Player(x, y)
     # вернем игрока, а также размер поля в клетках
@@ -258,17 +258,21 @@ settings_spr = pygame.sprite.Group()
 btns = pygame.sprite.Group()
 
 tile_images = {
-    'wall': load_image('box.png'),
-    'empty': load_image('grass.png')
+    '0': pygame.transform.scale(load_image('TEXTURE_0.jpg'), (100, 100)),
+    '1': pygame.transform.scale(load_image('TEXTURE_1.jpg'), (100, 100)),
+    '2': pygame.transform.scale(load_image('TEXTURE_2.jpg'), (100, 100)),
+    '3': pygame.transform.scale(load_image('TEXTURE_3.jpg'), (100, 100)),
+    '#': pygame.transform.scale(load_image('TEXTURE_wall.jpg'), (100, 100)),
+    'empty': pygame.transform.scale(load_image('TEXTURE_pol.jpg'), (100, 100))
 }
 player_image = load_image('mar.png')
 
-tile_width = tile_height = 50
+tile_width = tile_height = 100
 
 
 start_screen()
 story()
-level_map = load_level('map.txt')
+level_map = load_level('test_map_Dasha.txt')
 player, level_x, level_y = generate_level(level_map)
 
 running = True
