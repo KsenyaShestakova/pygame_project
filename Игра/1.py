@@ -1,4 +1,3 @@
-import os
 import sys
 
 import pygame
@@ -62,7 +61,6 @@ class BtnStart(pygame.sprite.Sprite):
 
 
 def start_screen():
-
     fon = pygame.transform.scale(load_image('fon.png'), (WIDTH, HEIGHT))
     screen.blit(fon, (0, 0))
     settings = Settings(0, 0)
@@ -265,7 +263,7 @@ tile_images = {
     '#': pygame.transform.scale(load_image('TEXTURE_wall.jpg'), (100, 100)),
     'empty': pygame.transform.scale(load_image('TEXTURE_pol.jpg'), (100, 100))
 }
-player_image = load_image('mar.png')
+player_image = pygame.transform.scale(load_image('PERS_K.jpg', -1), (80, 80))
 
 tile_width = tile_height = 100
 
