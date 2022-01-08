@@ -2,70 +2,17 @@ import sys
 
 import pygame
 from load_img import load_image
-from file_with_const import size, HEIGHT, WIDTH
-
-
-class Settings(pygame.sprite.Sprite):
-    def __init__(self, pos_x, pos_y):
-        super().__init__(settings_spr, all_sprites)
-        self.image_load = load_image('BUTTON_settings.png')
-        self.image = pygame.transform.scale(self.image_load, (50, 50))
-        self.change_img = load_image('BUTTON_settings.png')
-        self.rect = self.image.get_rect().move(pos_x, pos_y)
-        self.mask = pygame.mask.from_surface(self.image)
-        self.is_set = False
-
-    def update(self, *args):
-        try:
-            if args and args[0].type == pygame.MOUSEBUTTONDOWN and \
-                    self.rect.collidepoint(args[0].pos):
-                self.is_set = True
-                print(0)
-            elif args and self.rect.collidepoint(args[0].pos):
-                self.image = pygame.transform.scale(self.change_img, (50, 50))
-                print(5)
-            else:
-                self.image = pygame.transform.scale(self.image_load, (50, 50))
-        except AttributeError:
-            print('Вот где была ошибка.....')  # ладно всё равно не работает так как надо
-
-    def is_s(self):
-        return self.is_set
-
-
-class BtnStart(pygame.sprite.Sprite):
-    def __init__(self, name, pos_x, pos_y):
-        super().__init__(btns, all_sprites)
-        self.image_load = load_image(name)
-        self.change_img = load_image(name.split('.')[0] + '_change.' + name.split('.')[1])
-        self.image = pygame.transform.scale(self.image_load, (350, 250))
-        self.rect = self.image.get_rect().move(pos_x, pos_y)
-        self.is_st = False
-
-    def update(self, *args):
-        try:
-            if args and args[0].type == pygame.MOUSEBUTTONDOWN and \
-                    self.rect.collidepoint(args[0].pos):
-                self.is_st = True
-                print(0)
-            elif args and self.rect.collidepoint(args[0].pos):
-                self.image = pygame.transform.scale(self.image_load, (350, 250))
-                print(5)
-            else:
-                self.image = pygame.transform.scale(self.change_img, (350, 250))
-        except AttributeError:
-            print('Вот где была ошибка.....')
-
-    def is_start(self):
-        return self.is_st
+from file_with_const import size, HEIGHT, WIDTH,\
+    all_sprites, btns, settings_spr, tiles_group, player_group
+from buttons import Buttons
 
 
 def start_screen():
     fon = pygame.transform.scale(load_image('fon.png'), (WIDTH, HEIGHT))
     screen.blit(fon, (0, 0))
-    settings = Settings(0, 0)
-    new_game = BtnStart('BUTTON_new_game.png', 700, 200)
-    old_game = BtnStart('BUTTON_old_game.png', 700, 500)
+    settings = Buttons('BUTTON_settings.png', 0, 0, 50, 50)
+    new_game = Buttons('BUTTON_new_game.png', 700, 200, 350, 250)
+    old_game = Buttons('BUTTON_old_game.png', 700, 500, 350, 250)
     settings_spr.draw(screen)
     btns.draw(screen)
     while True:
@@ -75,15 +22,15 @@ def start_screen():
                 terminate()
             elif event.type == pygame.KEYDOWN or event.type == pygame.MOUSEBUTTONDOWN:
 
-                if settings.is_s():
+                if settings.is_clicked:
                     print('settings')
                     window_with_settings()
-                    settings.is_set = False
+                    settings.is_clicked = False
 
-                if new_game.is_start() and settings.is_s() is False:
+                if new_game.is_clicked and settings.is_clicked is False:
                     return print('new game')
 
-                if old_game.is_start() and settings.is_s() is False:
+                if old_game.is_clicked and settings.is_clicked is False:
                     return print('old game')
         pygame.display.flip()
         clock.tick(FPS)
@@ -249,11 +196,6 @@ FPS = 50
 clock = pygame.time.Clock()
 camera = Camera()
 
-tiles_group = pygame.sprite.Group()
-all_sprites = pygame.sprite.Group()
-player_group = pygame.sprite.Group()
-settings_spr = pygame.sprite.Group()
-btns = pygame.sprite.Group()
 
 tile_images = {
     '0': pygame.transform.scale(load_image('TEXTURE_0.jpg'), (100, 100)),
