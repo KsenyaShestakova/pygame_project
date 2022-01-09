@@ -124,7 +124,7 @@ class Tile(pygame.sprite.Sprite):
 class Player(pygame.sprite.Sprite):
     def __init__(self, pos_x, pos_y):
         super().__init__(player_group, all_sprites)
-        self.image = player_image
+        self.image = player_k_image
         self.rect = self.image.get_rect().move(
             tile_width * pos_x + 15, tile_height * pos_y + 5)
         self.pos = (pos_x, pos_y)
@@ -178,13 +178,13 @@ def move(player, movement):
         if y > 0 and (level_map[y - 1][x] == "." or level_map[y - 1][x] == "@"):
             player.move(x, y - 1)
     elif movement == "down":
-        if y < level_y and (level_map[y + 1][x] == "." or level_map[y + 1][x] == "@"):
+        if y < max_y and (level_map[y + 1][x] == "." or level_map[y + 1][x] == "@"):
             player.move(x, y + 1)
     elif movement == "left":
         if x > 0 and (level_map[y][x - 1] == "." or level_map[y][x - 1] == "@"):
             player.move(x - 1, y)
     elif movement == "right":
-        if x < level_y and (level_map[y][x + 1] == "." or level_map[y][x + 1] == "@"):
+        if x < max_x and (level_map[y][x + 1] == "." or level_map[y][x + 1] == "@"):
             player.move(x + 1, y)
 
 
@@ -205,15 +205,16 @@ tile_images = {
     '#': pygame.transform.scale(load_image('TEXTURE_wall.jpg'), (100, 100)),
     'empty': pygame.transform.scale(load_image('TEXTURE_pol.jpg'), (100, 100))
 }
-player_image = pygame.transform.scale(load_image('PERS_K.jpg', -1), (80, 80))
+player_k_image = pygame.transform.scale(load_image('PERS_K.jpg', -1), (65, 90))
+player_d_image = pygame.transform.scale(load_image('PERS_D.jpg', -1), (65, 90))
 
 tile_width = tile_height = 100
 
 
 start_screen()
 story()
-level_map = load_level('test_map_Dasha.txt')
-player, level_x, level_y = generate_level(level_map)
+level_map = load_level('level_3.txt')
+player, max_x, max_y = generate_level(level_map)
 
 running = True
 while running:

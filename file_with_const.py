@@ -9,3 +9,4 @@ all_sprites = pygame.sprite.Group()
 player_group = pygame.sprite.Group()
 settings_spr = pygame.sprite.Group()
 btns = pygame.sprite.Group()
+
