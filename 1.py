@@ -127,6 +127,7 @@ class Player(pygame.sprite.Sprite):
         self.image = player_k_image
         self.rect = self.image.get_rect().move(
             tile_width * pos_x + 15, tile_height * pos_y + 5)
+        self.mask = pygame.mask.from_surface(self.image)
         self.pos = (pos_x, pos_y)
 
     def move(self, x, y):
@@ -205,8 +206,8 @@ tile_images = {
     '#': pygame.transform.scale(load_image('TEXTURE_wall.jpg'), (100, 100)),
     'empty': pygame.transform.scale(load_image('TEXTURE_pol.jpg'), (100, 100))
 }
-player_k_image = pygame.transform.scale(load_image('PERS_K.jpg', -1), (65, 90))
-player_d_image = pygame.transform.scale(load_image('PERS_D.jpg', -1), (65, 90))
+player_k_image = pygame.transform.scale(load_image('PERS_K.png', colorkey=-1), (55, 90))
+player_d_image = pygame.transform.scale(load_image('PERS_D.png', colorkey=-1), (55, 90))
 
 tile_width = tile_height = 100
 
@@ -222,13 +223,13 @@ while running:
         if event.type == pygame.QUIT:
             running = False
         if event.type == pygame.KEYDOWN:
-            if event.key == pygame.K_w:
+            if event.key == pygame.K_w or event.key == pygame.K_UP:
                 move(player, 'up')
-            elif event.key == pygame.K_s:
+            elif event.key == pygame.K_s or event.key == pygame.K_DOWN:
                 move(player, "down")
-            elif event.key == pygame.K_a:
+            elif event.key == pygame.K_a or event.key == pygame.K_LEFT:
                 move(player, "left")
-            elif event.key == pygame.K_d:
+            elif event.key == pygame.K_d or event.key == pygame.K_RIGHT:
                 move(player, "right")
     screen.fill('black')
     camera.update(player)
