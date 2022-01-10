@@ -35,7 +35,9 @@ class Buttons(pygame.sprite.Sprite):
                 self.is_clicked = True
             elif args and self.rect.collidepoint(args[0].pos):
                 self.image = pygame.transform.scale(self.change_img, (self.width, self.height))
+                print(1)
             else:
                 self.image = pygame.transform.scale(self.image_load, (self.width, self.height))
+                print(2)
         except AttributeError:
             return
