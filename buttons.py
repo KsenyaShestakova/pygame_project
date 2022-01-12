@@ -22,13 +22,13 @@ class Buttons(pygame.sprite.Sprite):
 
     def draw_text(self, surface, color='black', x=None, y=None):
         if self.text != '':
-            font = pygame.font.SysFont('arial', 60)
+            font = pygame.font.SysFont('arial', int(self.width // 3))
             text = font.render(self.text, True, color)
             if x and y:
                 surface.blit(text, (x, y))
             else:
-                text_x = self.x + self.width // 2
-                text_y = self.y + self.width // 2
+                text_x = self.x + self.width // 2 - self.width // 13
+                text_y = self.y + self.width // 2 - self.height // 7
                 surface.blit(text, (text_x, text_y))
 
     def update(self, *args):

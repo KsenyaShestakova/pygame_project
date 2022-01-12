@@ -1,7 +1,7 @@
 OLD_GAME = False
 
-FIRST_LEVEL = False
-SECOND_LEVEL = False
+FIRST_LEVEL = True
+SECOND_LEVEL = True
 THIRD_LEVEL = False
 FOURTH_LEVEL = False
 FIFTH_LEVEL = False

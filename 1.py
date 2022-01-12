@@ -2,9 +2,11 @@ import sys
 
 import pygame
 from load_img import load_image
-from file_with_const import size, HEIGHT, WIDTH,\
-    all_sprites, btns, settings_spr, tiles_group, player_group
+from file_with_const import size, HEIGHT, WIDTH, \
+    all_sprites, btns, settings_spr, tiles_group, player_group, terminate
 from buttons import Buttons
+from menu import menu
+from story import story
 
 
 def start_screen(surface):
@@ -84,37 +86,14 @@ class SettingsWindow(pygame.sprite.Sprite):
             print(1)
 
 
-def terminate():
-    pygame.quit()
-    sys.exit()
-
-
-def story():
-    story = pygame.transform.scale(load_image('story.png'), (WIDTH, HEIGHT))
-    screen.blit(story, (0, 0))
-
-    while True:
-        for event in pygame.event.get():
-            if event.type == pygame.QUIT:
-                terminate()
-
-            elif event.type == pygame.KEYDOWN or \
-                    event.type == pygame.MOUSEBUTTONDOWN:
-                return  # начинаем игру
-        pygame.display.flip()
-        clock.tick(FPS)
-
-
 def load_level(filename):
     # filename = "data/" + filename
     # читаем уровень, убирая символы перевода строки
     with open(filename, 'r') as mapFile:
         level_map = [line.strip() for line in mapFile]
 
-    # и подсчитываем максимальную длину
     max_width = max(map(len, level_map))
 
-    # дополняем каждую строку пустыми клетками ('.')
     return list(map(lambda x: list(x.ljust(max_width, '.')), level_map))
 
 
@@ -202,6 +181,16 @@ FPS = 50
 clock = pygame.time.Clock()
 camera = Camera()
 
+levels = {
+    1: 'level_1.txt',
+    2: 'level_2.txt',
+    3: 'level_3.txt',
+    4: 'level_4.txt',
+    5: 'level_5.txt',
+    6: 'level_6.txt',
+    7: 'level_7.txt',
+    8: 'level_8.txt'
+}
 
 tile_images = {
     '0': pygame.transform.scale(load_image('TEXTURE_0.jpg'), (100, 100)),
@@ -218,9 +207,11 @@ tile_width = tile_height = 100
 
 
 if start_screen(screen) == 'new game':
-    story()
+    story(screen)
+level = menu(screen)
+print(level)
 
-level_map = load_level('level_3.txt')
+level_map = load_level(levels[level])
 player, max_x, max_y = generate_level(level_map)
 
 running = True
