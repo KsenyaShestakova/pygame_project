@@ -3,7 +3,7 @@ from PIL import Image
 
 
 def box(filename, endname):
-    fullname = os.path.join('Игра', 'data', filename)
+    fullname = os.path.join('data', filename)
     image = Image.open(fullname)
     pixels = image.load()
     x, y = image.size
@@ -19,8 +19,8 @@ def box(filename, endname):
             pixels2[i, j] = int(pixels[i, j][0]) - 50,\
                             int(pixels[i, j][1]) - 50,\
                             int(pixels[i, j][2]) - 50
-    endname = os.path.join('Игра', 'data', endname)
+    endname = os.path.join('data', endname)
     res.save(endname)
 
 
-box('BUTTON_settings.png', 'BUTTON_settings_change.png')
+box('open_level.png', 'open_level_change.png')

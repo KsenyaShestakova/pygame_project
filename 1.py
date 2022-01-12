@@ -7,19 +7,20 @@ from file_with_const import size, HEIGHT, WIDTH,\
 from buttons import Buttons
 
 
-def start_screen():
+def start_screen(surface):
     fon = pygame.transform.scale(load_image('fon.png'), (WIDTH, HEIGHT))
-    screen.blit(fon, (0, 0))
+    surface.blit(fon, (0, 0))
     settings = Buttons('BUTTON_settings.png', 0, 0, 50, 50)
     new_game = Buttons('BUTTON_new_game.png', 700, 200, 350, 250)
     old_game = Buttons('BUTTON_old_game.png', 700, 500, 350, 250)
-    settings_spr.draw(screen)
-    btns.draw(screen)
+    btns.draw(surface)
     while True:
         for event in pygame.event.get():
             all_sprites.update(event)
+
             if event.type == pygame.QUIT:
                 terminate()
+
             elif event.type == pygame.KEYDOWN or event.type == pygame.MOUSEBUTTONDOWN:
 
                 if settings.is_clicked:
@@ -28,10 +29,13 @@ def start_screen():
                     settings.is_clicked = False
 
                 if new_game.is_clicked and settings.is_clicked is False:
-                    return print('new game')
+                    # нужно сделать окошко точно ли хочет начать новую игру если есть старая
+                    return 'new game'
 
                 if old_game.is_clicked and settings.is_clicked is False:
-                    return print('old game')
+                    # нужно сделать проверку есть старая игра или нет
+                    return 'old game'
+
         pygame.display.flip()
         clock.tick(FPS)
 
@@ -93,6 +97,7 @@ def story():
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 terminate()
+
             elif event.type == pygame.KEYDOWN or \
                     event.type == pygame.MOUSEBUTTONDOWN:
                 return  # начинаем игру
@@ -206,14 +211,15 @@ tile_images = {
     '#': pygame.transform.scale(load_image('TEXTURE_wall.jpg'), (100, 100)),
     'empty': pygame.transform.scale(load_image('TEXTURE_pol.jpg'), (100, 100))
 }
-player_k_image = pygame.transform.scale(load_image('PERS_K.png', colorkey=-1), (55, 90))
-player_d_image = pygame.transform.scale(load_image('PERS_D.png', colorkey=-1), (55, 90))
+player_k_image = pygame.transform.scale(load_image('PERS_K.png', color_key=-1), (55, 90))
+player_d_image = pygame.transform.scale(load_image('PERS_D.png', color_key=-1), (55, 90))
 
 tile_width = tile_height = 100
 
 
-start_screen()
-story()
+if start_screen(screen) == 'new game':
+    story()
+
 level_map = load_level('level_3.txt')
 player, max_x, max_y = generate_level(level_map)
 

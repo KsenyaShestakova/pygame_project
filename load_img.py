@@ -2,16 +2,18 @@ import os
 import pygame
 
 
-def load_image(name, colorkey=None):
+def load_image(name, color_key=None):
     fullname = os.path.join('data', name)
     try:
         image = pygame.image.load(fullname)
     except pygame.error as message:
         print("Не удалось загрузить изображение!")
         raise SystemExit(message)
-    image = image.convert_alpha()
-    if colorkey is not None:
-        if colorkey == -1:
+    if color_key is not None:
+        image = image.convert()
+        if color_key == -1:
             color_key = image.get_at((0, 0))
-        image.set_colorkey(colorkey)
+        image.set_colorkey(color_key)
+    else:
+        image = image.convert_alpha()
     return image
