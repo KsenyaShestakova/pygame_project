@@ -1,7 +1,8 @@
 import pygame
 
-from file_with_const import WIDTH, HEIGHT, terminate, clock, FPS
+from file_with_const import WIDTH, HEIGHT, clock, FPS
 from load_img import load_image
+from terminate import terminate
 
 
 def story(surface):

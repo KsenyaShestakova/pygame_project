@@ -3,70 +3,12 @@ import sys
 import pygame
 from load_img import load_image
 from file_with_const import size, HEIGHT, WIDTH, \
-    all_sprites, btns, settings_spr, tiles_group, player_group, terminate, menu_running
-from buttons import Buttons
+    all_sprites, btns, settings_spr, tiles_group, player_group, menu_running, FPS, levels, pers_size, \
+    tile_width, tile_height, tile_images
 from menu import menu
+from new_game import new_game
+from start_screen import start_screen
 from story import story
-
-
-def start_screen(surface):
-    fon = pygame.transform.scale(load_image('fon.png'), (WIDTH, HEIGHT))
-    surface.blit(fon, (0, 0))
-    settings = Buttons('BUTTON_settings.png', 0, 0, 50, 50)
-    new_game = Buttons('BUTTON_new_game.png', 700, 200, 350, 250)
-    old_game = Buttons('BUTTON_old_game.png', 700, 500, 350, 250)
-    btns.draw(surface)
-    while True:
-        for event in pygame.event.get():
-            all_sprites.update(event)
-
-            if event.type == pygame.QUIT:
-                terminate()
-
-            elif event.type == pygame.KEYDOWN or event.type == pygame.MOUSEBUTTONDOWN:
-
-                if settings.is_clicked:
-                    print('settings')
-                    window_with_settings()
-                    settings.is_clicked = False
-
-                if new_game.is_clicked and settings.is_clicked is False:
-                    # нужно сделать окошко точно ли хочет начать новую игру если есть старая
-                    return 'new game'
-
-                if old_game.is_clicked and settings.is_clicked is False:
-                    # нужно сделать проверку есть старая игра или нет
-                    return 'old game'
-
-        pygame.display.flip()
-        clock.tick(FPS)
-
-
-def window_with_settings():  # при закрытии is_s() возвращает False
-    dr_set = pygame.draw.rect(screen, 'black', (WIDTH // 5, HEIGHT // 5, WIDTH // 5 * 3, HEIGHT // 5 * 3))
-    while True:
-        for event in pygame.event.get():
-
-            if event.type == pygame.QUIT:
-                terminate()
-            elif event.type == pygame.MOUSEBUTTONDOWN:
-                print(9)
-
-                return
-            """elif event.type == pygame.KEYDOWN or event.type == pygame.MOUSEBUTTONDOWN:
-
-                if settings.is_s():
-                    print('settings')
-                    window_with_settings()
-                    settings.is_set = False
-
-                if new_game.is_start() and settings.is_s() is False:
-                    return print('new game')
-
-                if old_game.is_start() and settings.is_s() is False:
-                    return print('old game')"""
-        pygame.display.flip()
-        clock.tick(FPS)
 
 
 class SettingsWindow(pygame.sprite.Sprite):
@@ -177,36 +119,16 @@ pygame.init()
 
 pygame.display.set_caption('Pizza')
 screen = pygame.display.set_mode(size)
-FPS = 50
 clock = pygame.time.Clock()
 camera = Camera()
 
-levels = {
-    1: 'level_1.txt',
-    2: 'level_2.txt',
-    3: 'level_3.txt',
-    4: 'level_4.txt',
-    5: 'level_5.txt',
-    6: 'level_6.txt',
-    7: 'level_7.txt',
-    8: 'level_8.txt'
-}
 
-tile_images = {
-    '0': pygame.transform.scale(load_image('TEXTURE_0.jpg'), (100, 100)),
-    '1': pygame.transform.scale(load_image('TEXTURE_1.jpg'), (100, 100)),
-    '2': pygame.transform.scale(load_image('TEXTURE_2.jpg'), (100, 100)),
-    '3': pygame.transform.scale(load_image('TEXTURE_3.jpg'), (100, 100)),
-    '#': pygame.transform.scale(load_image('TEXTURE_wall.jpg'), (100, 100)),
-    'empty': pygame.transform.scale(load_image('TEXTURE_pol.jpg'), (100, 100))
-}
-player_k_image = pygame.transform.scale(load_image('PERS_K.png', color_key=-1), (55, 90))
-player_d_image = pygame.transform.scale(load_image('PERS_D.png', color_key=-1), (55, 90))
-
-tile_width = tile_height = 100
+player_k_image = pygame.transform.scale(load_image('PERS_K.png', color_key=-1), pers_size)
+player_d_image = pygame.transform.scale(load_image('PERS_D.png', color_key=-1), pers_size)
 
 
 if start_screen(screen) == 'new game':
+    new_game()
     story(screen)
 
 while menu_running:
@@ -233,13 +155,14 @@ while menu_running:
                 elif event.key == pygame.K_ESCAPE:
                     running = False
                     player.kill()
+                    for el in tiles_group:
+                        el.kill()
         screen.fill('black')
         camera.update(player)
         tiles_group.draw(screen)
         player_group.draw(screen)
         pygame.display.flip()
         clock.tick(FPS)
-
 
 
 pygame.display.quit()

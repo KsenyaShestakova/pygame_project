@@ -1,14 +1,13 @@
 import pygame
 
 from buttons import Buttons
-from file_with_const import WIDTH, HEIGHT, btns, all_sprites, terminate, clock, FPS
+from file_with_const import WIDTH, HEIGHT, btns, all_sprites, clock, FPS, lvl_btn
 from load_img import load_image
 from file_new import FIRST_LEVEL, SECOND_LEVEL, THIRD_LEVEL, FIFTH_LEVEL,\
     FOURTH_LEVEL, SIXTH_LEVEL, SEVENTH_LEVEL, EIGHT_LEVEL
+from terminate import terminate
 
 pygame.init()
-screen = pygame.display.set_mode((WIDTH, HEIGHT))
-lvl_btn = pygame.sprite.Group()
 
 
 def menu(surface):
