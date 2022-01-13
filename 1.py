@@ -9,7 +9,6 @@ from menu import menu
 from new_game import new_game
 from start_screen import start_screen
 from story import story
-from file_new import LEVEL_NOW
 
 
 def start_screen(surface):
@@ -112,10 +111,7 @@ class Tile(pygame.sprite.Sprite):
 class Player(pygame.sprite.Sprite):
     def __init__(self, pos_x, pos_y):
         super().__init__(player_group, all_sprites)
-        if LEVEL_NOW % 2 == 0:
-            self.image = player_d_image
-        else:
-            self.image = player_k_image
+        self.image = player_k_image
         self.rect = self.image.get_rect().move(
             tile_width * pos_x + 15, tile_height * pos_y + 5)
         self.mask = pygame.mask.from_surface(self.image)
@@ -130,34 +126,6 @@ class Player(pygame.sprite.Sprite):
         level_map[self.pos[1]][self.pos[0]] = '@'
         for sprite in tiles_group:
             camera.apply(sprite)
-
-
-class Enemy(pygame.sprite.Sprite):
-    def __init__(self, pos_x, pos_y):
-        super().__init__(player_group, all_sprites)
-        self.image = enemy_image
-        self.rect = self.image.get_rect().move(
-            tile_width * pos_x + 15, tile_height * pos_y + 5)
-        self.mask = pygame.mask.from_surface(self.image)
-        self.pos = (pos_x, pos_y)
-
-    def move(self, x, y):
-        camera.dx -= tile_width * (x - self.pos[0])
-        camera.dy -= tile_width * (y - self.pos[1])
-
-        level_map[self.pos[1]][self.pos[0]] = '.'
-        self.pos = (x, y)
-        level_map[self.pos[1]][self.pos[0]] = '@'
-        for sprite in tiles_group:
-            camera.apply(sprite)
-
-
-class Product(pygame.sprite.Sprite):
-    pass
-
-
-class Exit(pygame.sprite.Sprite):
-    pass
 
 
 class Camera:
@@ -181,22 +149,13 @@ def generate_level(level):
     new_player, x, y = None, None, None
     for y in range(len(level)):
         for x in range(len(level[y])):
-            if level[y][x] in '.':
+            if level[y][x] in '.@':
                 Tile('empty', x, y)
             elif level[y][x] in '1230#':
                 Tile(str(level[y][x]), x, y)
             elif level[y][x] == '?':
                 Tile('empty', x, y)
                 new_player = Player(x, y)
-            elif level[y][x] == '^':
-                Tile('empty', x, y)
-                new_enemy = Enemy(x, y)
-            elif level[y][x] == '*':
-                Tile('empty', x, y)
-                product = Product(x, y)
-            elif level[y][x] == '@':
-                Tile('@', x, y)
-                exit = Exit(x, y)
     # вернем игрока, а также размер поля в клетках
     return new_player, x, y
 
@@ -239,15 +198,12 @@ tile_images = {
     '2': pygame.transform.scale(load_image('TEXTURE_2.jpg'), (100, 100)),
     '3': pygame.transform.scale(load_image('TEXTURE_3.jpg'), (100, 100)),
     '#': pygame.transform.scale(load_image('TEXTURE_wall.jpg'), (100, 100)),
-    'empty': pygame.transform.scale(load_image('TEXTURE_pol.jpg'), (100, 100)),
-    'exit': pygame.transform.scale(load_image('exit.jpg'), (100, 100))
+    'empty': pygame.transform.scale(load_image('TEXTURE_pol.jpg'), (100, 100))
 }
 player_k_image = pygame.transform.scale(load_image('PERS_K.png', color_key=-1), (55, 90))
 player_d_image = pygame.transform.scale(load_image('PERS_D.png', color_key=-1), (55, 90))
 
 tile_width = tile_height = 100
-
-enemy_image = pygame.transform.scale(load_image('bake.png'), (90, 80))
 
 
 if start_screen(screen) == 'new game':
