@@ -5,11 +5,11 @@ from load_img import load_image
 pygame.init()
 
 USERNAME = os.environ.get("USERNAME")
-size = WIDTH, HEIGHT = 1200, 900
+size = WIDTH, HEIGHT = 800, 600
 FPS = 60
 pers_size = pers_width, pers_height = (WIDTH // 22, HEIGHT // 10)
 
-tile_size = tile_width = tile_height = int(WIDTH // 12)
+tile_size = tile_width, tile_height = (WIDTH // 12, WIDTH // 12)
 
 clock = pygame.time.Clock()
 tiles_group = pygame.sprite.Group()
@@ -36,10 +36,10 @@ levels = {
 }
 
 tile_images = {
-    '0': pygame.transform.scale(load_image('TEXTURE_0.jpg'), (100, 100)),
-    '1': pygame.transform.scale(load_image('TEXTURE_1.jpg'), (100, 100)),
-    '2': pygame.transform.scale(load_image('TEXTURE_2.jpg'), (100, 100)),
-    '3': pygame.transform.scale(load_image('TEXTURE_3.jpg'), (100, 100)),
-    '#': pygame.transform.scale(load_image('TEXTURE_wall.jpg'), (100, 100)),
-    'empty': pygame.transform.scale(load_image('TEXTURE_pol.jpg'), (100, 100))
+    '0': pygame.transform.scale(load_image('TEXTURE_0.jpg'), tile_size),
+    '1': pygame.transform.scale(load_image('TEXTURE_1.jpg'), tile_size),
+    '2': pygame.transform.scale(load_image('TEXTURE_2.jpg'), tile_size),
+    '3': pygame.transform.scale(load_image('TEXTURE_3.jpg'), tile_size),
+    '#': pygame.transform.scale(load_image('TEXTURE_wall.jpg'), tile_size),
+    'empty': pygame.transform.scale(load_image('TEXTURE_pol.jpg'), tile_size)
 }
