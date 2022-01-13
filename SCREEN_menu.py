@@ -58,6 +58,10 @@ def menu(surface):
     do_buttons(surface)
 
     while True:
+        lvl_btn.draw(surface)
+        for el in lvl_btn:
+            if el.is_open:
+                el.draw_text(surface, (223, 93, 71))
         for event in pygame.event.get():
 
             if event.type == pygame.QUIT:
@@ -106,7 +110,7 @@ def do_buttons(surface):
 
 class LevelBtn(Buttons):
     level_img_otkr = 'BUTTON_open_level.png'
-    level_img_not_otkr = "close_level.png"
+    level_img_not_otkr = "BUTTON_close_level.png"
 
     def __init__(self, coords: tuple[int, int], transform: tuple[int, int], lvl_number, is_open):
         if is_open:
@@ -116,7 +120,7 @@ class LevelBtn(Buttons):
 
         Buttons.__init__(self, name=img, pos_x=coords[0],
                          pos_y=coords[1], transform_width=transform[0],
-                         transform_height=transform[1], text=str(lvl_number))
+                         transform_height=transform[1], text=str(lvl_number), is_pr=None)
         pygame.sprite.Sprite.__init__(self, lvl_btn, all_sprites)
 
         self.number = lvl_number

@@ -4,10 +4,10 @@ from load_img import load_image
 
 
 class Buttons(pygame.sprite.Sprite):
-    def __init__(self, name, pos_x, pos_y, transform_width, transform_height, text=''):
+    def __init__(self, name, pos_x, pos_y, transform_width, transform_height, text='', is_pr=None):
         super().__init__(btns, all_sprites)
-        self.change_img = load_image(name.split('.')[0] + '_change.' + name.split('.')[1])
-        self.image_load = load_image(name)
+        self.image_load = load_image(name, is_pr)
+        self.change_img = load_image(name.split('.')[0] + '_change.' + name.split('.')[1], is_pr)
 
         self.text = text
         self.width = transform_width

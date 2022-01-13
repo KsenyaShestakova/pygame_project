@@ -14,23 +14,6 @@ from terminate import terminate
 from file_new import LEVEL_NOW
 
 
-class SettingsWindow(pygame.sprite.Sprite):
-    def __init__(self, name, pos_x, pos_y):
-        super().__init__(settings_spr, all_sprites)
-        self.image_load = load_image(name)
-        tile_width, tile_height = self.image_load.get_width(), self.image_load.get_height()
-        self.image = pygame.transform.scale(self.image_load, (100, 50))
-        self.rect = self.image.get_rect().move(
-            tile_width + pos_x, tile_height + pos_y)
-        self.is_st = 0
-
-    def update(self, *args):
-        if args and args[0].type == pygame.MOUSEBUTTONDOWN and \
-                self.rect.collidepoint(args[0].pos):
-            self.is_st += 1
-            print(1)
-
-
 def load_level(filename):
     # filename = "data/" + filename
     # читаем уровень, убирая символы перевода строки
@@ -164,8 +147,8 @@ pygame.display.set_caption('Pizza')
 camera = Camera()
 
 
-player_k_image = pygame.transform.scale(load_image('PERS_K.png', color_key=-1), pers_size)
-player_d_image = pygame.transform.scale(load_image('PERS_D.png', color_key=-1), pers_size)
+player_k_image = pygame.transform.scale(load_image('PERS_K.png', color_key=None), pers_size)
+player_d_image = pygame.transform.scale(load_image('PERS_D.png', color_key=None), pers_size)
 
 enemy1_image = pygame.transform.scale(load_image('bake1.png', color_key=-1), enemy_size)
 enemy2_image = pygame.transform.scale(load_image('bake2.png', color_key=-1), enemy_size)
