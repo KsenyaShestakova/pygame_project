@@ -21,6 +21,7 @@ lvl_btn = pygame.sprite.Group()
 
 menu_running = True
 
+screen = pygame.display.set_mode(size)
 
 levels = {
     1: 'level_1.txt',
@@ -34,10 +35,10 @@ levels = {
 }
 
 tile_images = {
-    '0': pygame.transform.scale(load_image('TEXTURE_0.jpg'), tile_size),
-    '1': pygame.transform.scale(load_image('TEXTURE_1.jpg'), tile_size),
-    '2': pygame.transform.scale(load_image('TEXTURE_2.jpg'), tile_size),
-    '3': pygame.transform.scale(load_image('TEXTURE_3.jpg'), tile_size),
-    '#': pygame.transform.scale(load_image('TEXTURE_wall.jpg'), tile_size),
-    'empty': pygame.transform.scale(load_image('TEXTURE_pol.jpg'), tile_size)
+    '0': pygame.transform.scale(load_image('TEXTURE_0.jpg'), (100, 100)),
+    '1': pygame.transform.scale(load_image('TEXTURE_1.jpg'), (100, 100)),
+    '2': pygame.transform.scale(load_image('TEXTURE_2.jpg'), (100, 100)),
+    '3': pygame.transform.scale(load_image('TEXTURE_3.jpg'), (100, 100)),
+    '#': pygame.transform.scale(load_image('TEXTURE_wall.jpg'), (100, 100)),
+    'empty': pygame.transform.scale(load_image('TEXTURE_pol.jpg'), (100, 100))
 }

@@ -4,11 +4,12 @@ import pygame
 from load_img import load_image
 from file_with_const import size, HEIGHT, WIDTH, \
     all_sprites, btns, settings_spr, tiles_group, player_group, menu_running, FPS, levels, pers_size, \
-    tile_width, tile_height, tile_images
+    tile_width, tile_height, tile_images, screen, clock
 from menu import menu
 from new_game import new_game
 from start_screen import start_screen
 from story import story
+from terminate import terminate
 
 
 class SettingsWindow(pygame.sprite.Sprite):
@@ -118,8 +119,6 @@ def move(player, movement):
 pygame.init()
 
 pygame.display.set_caption('Pizza')
-screen = pygame.display.set_mode(size)
-clock = pygame.time.Clock()
 camera = Camera()
 
 
@@ -133,7 +132,6 @@ if start_screen(screen) == 'new game':
 
 while menu_running:
     level = menu(screen)
-    print(level)
 
     level_map = load_level(levels[level])
     player, max_x, max_y = generate_level(level_map)
@@ -142,7 +140,7 @@ while menu_running:
     while running:
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
-                running = False
+                terminate()
             if event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_w or event.key == pygame.K_UP:
                     move(player, 'up')
