@@ -1,13 +1,55 @@
 import pygame
 
+import file_new
 from buttons import Buttons
 from file_with_const import WIDTH, HEIGHT, btns, all_sprites, clock, FPS, lvl_btn
 from load_img import load_image
-from file_new import FIRST_LEVEL, SECOND_LEVEL, THIRD_LEVEL, FIFTH_LEVEL,\
-    FOURTH_LEVEL, SIXTH_LEVEL, SEVENTH_LEVEL, EIGHT_LEVEL
+
 from terminate import terminate
 
 pygame.init()
+
+FIRST_LEVEL = False
+SECOND_LEVEL = False
+THIRD_LEVEL = False
+FOURTH_LEVEL = False
+FIFTH_LEVEL = False
+SIXTH_LEVEL = False
+SEVENTH_LEVEL = False
+EIGHT_LEVEL = False
+
+OLD_GAME = None
+
+
+def change_is_open(filename, level: int):
+    global OLD_GAME
+    with open(filename, 'w') as file:
+        OLD_GAME[level - 1] = 1
+        file.write(' '.join(OLD_GAME))
+
+
+def new_game(filename):
+    with open(filename, 'w') as file:
+        file.write('0 0 0 0 0 0 0 0')
+
+
+def game(filename):
+    global FIRST_LEVEL, SECOND_LEVEL, THIRD_LEVEL, FIFTH_LEVEL,\
+        FOURTH_LEVEL, SIXTH_LEVEL, SEVENTH_LEVEL, EIGHT_LEVEL, OLD_GAME
+    with open(filename, 'r') as file:
+        levels = list(line.split() for line in file)
+    levels = list(map(int, levels[0]))
+
+    FIRST_LEVEL = levels[0]
+    SECOND_LEVEL = levels[1]
+    THIRD_LEVEL = levels[2]
+    FOURTH_LEVEL = levels[3]
+    FIFTH_LEVEL = levels[4]
+    SIXTH_LEVEL = levels[5]
+    SEVENTH_LEVEL = levels[6]
+    EIGHT_LEVEL = levels[7]
+
+    OLD_GAME = levels
 
 
 def menu(surface):
@@ -28,6 +70,7 @@ def menu(surface):
             for el in lvl_btn:
                 lvl = el.update(event)
                 if lvl:
+                    file_new.LEVEL_NOW = lvl
                     return lvl
         pygame.display.flip()
         clock.tick(FPS)
@@ -62,10 +105,10 @@ def do_buttons(surface):
 
 
 class LevelBtn(Buttons):
-    level_img_otkr = 'open_level.png'
+    level_img_otkr = 'BUTTON_open_level.png'
     level_img_not_otkr = "close_level.png"
 
-    def __init__(self, coords: tuple, transform: tuple, lvl_number, is_open):
+    def __init__(self, coords: tuple[int, int], transform: tuple[int, int], lvl_number, is_open):
         if is_open:
             img = LevelBtn.level_img_otkr
         else:
