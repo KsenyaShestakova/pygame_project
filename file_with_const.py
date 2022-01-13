@@ -8,16 +8,17 @@ USERNAME = os.environ.get("USERNAME")
 size = WIDTH, HEIGHT = 800, 600
 FPS = 60
 pers_size = pers_width, pers_height = (WIDTH // 22, HEIGHT // 10)
-
+enemy_size = enemy_width, enemy_height = (WIDTH // 13, HEIGHT // 10)
 tile_size = tile_width, tile_height = (WIDTH // 12, WIDTH // 12)
 
 clock = pygame.time.Clock()
 tiles_group = pygame.sprite.Group()
 all_sprites = pygame.sprite.Group()
+enemy_group = pygame.sprite.Group()
 player_group = pygame.sprite.Group()
 settings_spr = pygame.sprite.Group()
-enemy_group = pygame.sprite.Sprite()
 btns = pygame.sprite.Group()
+products_group = pygame.sprite.Group()
 lvl_btn = pygame.sprite.Group()
 
 menu_running = True
@@ -41,5 +42,6 @@ tile_images = {
     '2': pygame.transform.scale(load_image('TEXTURE_2.jpg'), tile_size),
     '3': pygame.transform.scale(load_image('TEXTURE_3.jpg'), tile_size),
     '#': pygame.transform.scale(load_image('TEXTURE_wall.jpg'), tile_size),
-    'empty': pygame.transform.scale(load_image('TEXTURE_pol.jpg'), tile_size)
+    'empty': pygame.transform.scale(load_image('TEXTURE_pol.jpg'), tile_size),
+    'exit': pygame.transform.scale(load_image('exit.jpg'), tile_size)
 }

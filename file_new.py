@@ -9,4 +9,4 @@ SIXTH_LEVEL = False
 SEVENTH_LEVEL = False
 EIGHT_LEVEL = False
 
-LEVEL_NOW = None
+LEVEL_NOW = 3
