@@ -14,6 +14,7 @@ player_group = pygame.sprite.Group()
 settings_spr = pygame.sprite.Group()
 btns = pygame.sprite.Group()
 
+menu_running = True
 
 def terminate():
     pygame.quit()

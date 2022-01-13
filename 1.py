@@ -3,7 +3,7 @@ import sys
 import pygame
 from load_img import load_image
 from file_with_const import size, HEIGHT, WIDTH, \
-    all_sprites, btns, settings_spr, tiles_group, player_group, terminate
+    all_sprites, btns, settings_spr, tiles_group, player_group, terminate, menu_running
 from buttons import Buttons
 from menu import menu
 from story import story
@@ -208,31 +208,39 @@ tile_width = tile_height = 100
 
 if start_screen(screen) == 'new game':
     story(screen)
-level = menu(screen)
-print(level)
 
-level_map = load_level(levels[level])
-player, max_x, max_y = generate_level(level_map)
+while menu_running:
+    level = menu(screen)
+    print(level)
 
-running = True
-while running:
-    for event in pygame.event.get():
-        if event.type == pygame.QUIT:
-            running = False
-        if event.type == pygame.KEYDOWN:
-            if event.key == pygame.K_w or event.key == pygame.K_UP:
-                move(player, 'up')
-            elif event.key == pygame.K_s or event.key == pygame.K_DOWN:
-                move(player, "down")
-            elif event.key == pygame.K_a or event.key == pygame.K_LEFT:
-                move(player, "left")
-            elif event.key == pygame.K_d or event.key == pygame.K_RIGHT:
-                move(player, "right")
-    screen.fill('black')
-    camera.update(player)
-    tiles_group.draw(screen)
-    player_group.draw(screen)
-    pygame.display.flip()
-    clock.tick(FPS)
+    level_map = load_level(levels[level])
+    player, max_x, max_y = generate_level(level_map)
+
+    running = True
+    while running:
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                running = False
+            if event.type == pygame.KEYDOWN:
+                if event.key == pygame.K_w or event.key == pygame.K_UP:
+                    move(player, 'up')
+                elif event.key == pygame.K_s or event.key == pygame.K_DOWN:
+                    move(player, "down")
+                elif event.key == pygame.K_a or event.key == pygame.K_LEFT:
+                    move(player, "left")
+                elif event.key == pygame.K_d or event.key == pygame.K_RIGHT:
+                    move(player, "right")
+                elif event.key == pygame.K_ESCAPE:
+                    running = False
+                    player.kill()
+        screen.fill('black')
+        camera.update(player)
+        tiles_group.draw(screen)
+        player_group.draw(screen)
+        pygame.display.flip()
+        clock.tick(FPS)
+
+
+
 pygame.display.quit()
 pygame.quit()

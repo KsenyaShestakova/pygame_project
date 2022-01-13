@@ -23,20 +23,15 @@ def menu(surface):
                 terminate()
 
             elif event.type == pygame.KEYDOWN or event.type == pygame.MOUSEBUTTONDOWN:
-
+                """"if event.key == pygame.K_ESCAPE:
+                    terminate()"""
                 pass
-            lvl_btn.update(event)
+            for el in lvl_btn:
+                lvl = el.update(event)
+                if lvl:
+                    return lvl
         pygame.display.flip()
         clock.tick(FPS)
-"""     lvl1 = LevelBtn(COORDS[1], (WIDTH / 6, WIDTH / 6), 1, FIRST_LEVEL)
-        lvl2 = LevelBtn(COORDS[2], (WIDTH / 6, WIDTH / 6), 2, SECOND_LEVEL)
-        lvl3 = LevelBtn(COORDS[3], (WIDTH / 6, WIDTH / 6), 3, THIRD_LEVEL)
-        lvl4 = LevelBtn(COORDS[4], (WIDTH / 6, WIDTH / 6), 4, FOURTH_LEVEL)
-        lvl5 = LevelBtn(COORDS[5], (WIDTH / 6, WIDTH / 6), 5, FIFTH_LEVEL)
-        lvl6 = LevelBtn(COORDS[6], (WIDTH / 6, WIDTH / 6), 6, SIXTH_LEVEL)
-        lvl7 = LevelBtn(COORDS[7], (WIDTH / 6, WIDTH / 6), 7, SEVENTH_LEVEL)
-        lvl8 = LevelBtn(COORDS[8], (WIDTH / 6, WIDTH / 6), 8, EIGHT_LEVEL)
-    """
 
 
 def render_coords():
@@ -89,6 +84,7 @@ class LevelBtn(Buttons):
         try:
             if args and args[0].type == pygame.MOUSEBUTTONDOWN and \
                     self.rect.collidepoint(args[0].pos) and self.is_open:
+                print(self.number)
                 return self.number
             elif args and self.x <= pygame.mouse.get_pos()[0] <= self.x + self.width and \
                     self.y <= pygame.mouse.get_pos()[1] <= self.y + self.height:
@@ -100,3 +96,4 @@ class LevelBtn(Buttons):
 
     def get_level_number(self):
         return self.number
+
