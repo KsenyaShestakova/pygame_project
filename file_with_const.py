@@ -12,6 +12,7 @@ tiles_group = pygame.sprite.Group()
 all_sprites = pygame.sprite.Group()
 player_group = pygame.sprite.Group()
 settings_spr = pygame.sprite.Group()
+enemy_group = pygame.sprite.Sprite()
 btns = pygame.sprite.Group()
 
 
