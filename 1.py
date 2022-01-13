@@ -1,12 +1,13 @@
 import sys
 
 import pygame
+
+from SCREEN_menu import new_game, game, FIRST_LEVEL, SECOND_LEVEL, THIRD_LEVEL, FOURTH_LEVEL
 from load_img import load_image
 from file_with_const import size, HEIGHT, WIDTH, \
     all_sprites, btns, settings_spr, tiles_group, player_group, menu_running, FPS, levels, pers_size, \
     tile_width, tile_height, tile_images, screen, clock
 from SCREEN_menu import menu
-from new_game import new_game
 from SCREEN_start import start_screen
 from SCREEN_story import story
 from terminate import terminate
@@ -127,10 +128,12 @@ player_d_image = pygame.transform.scale(load_image('PERS_D.png', color_key=-1), 
 
 
 if start_screen(screen) == 'new game':
-    new_game()
+    new_game('open_levels.txt')
     story(screen)
 
 while menu_running:
+    game('open_levels.txt')
+    print(FIRST_LEVEL, SECOND_LEVEL, THIRD_LEVEL, FOURTH_LEVEL)
     level = menu(screen)
 
     level_map = load_level(levels[level])
