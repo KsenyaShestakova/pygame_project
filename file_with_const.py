@@ -20,6 +20,7 @@ settings_spr = pygame.sprite.Group()
 btns = pygame.sprite.Group()
 products_group = pygame.sprite.Group()
 lvl_btn = pygame.sprite.Group()
+exit_sprite = pygame.sprite.Group()
 
 menu_running = True
 

@@ -25,6 +25,7 @@ def change_is_open(filename, level: int):
     global OLD_GAME
     with open(filename, 'w') as file:
         OLD_GAME[level - 1] = 1
+        OLD_GAME = list(map(str, OLD_GAME))
         file.write(' '.join(OLD_GAME))
 
 
@@ -112,7 +113,7 @@ class LevelBtn(Buttons):
     level_img_otkr = 'BUTTON_open_level.png'
     level_img_not_otkr = "BUTTON_close_level.png"
 
-    def __init__(self, coords: tuple[int, int], transform: tuple[int, int], lvl_number, is_open):
+    def __init__(self, coords: (int, int), transform: (int, int), lvl_number, is_open):
         if is_open:
             img = LevelBtn.level_img_otkr
         else:
@@ -132,8 +133,7 @@ class LevelBtn(Buttons):
                     self.rect.collidepoint(args[0].pos) and self.is_open:
                 print(self.number)
                 return self.number
-            elif args and self.x <= pygame.mouse.get_pos()[0] <= self.x + self.width and \
-                    self.y <= pygame.mouse.get_pos()[1] <= self.y + self.height:
+            elif args and self.rect.collidepoint(args[0].pos):
                 self.image = self.change_img
             else:
                 self.image = self.old_img

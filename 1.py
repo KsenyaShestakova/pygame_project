@@ -2,11 +2,14 @@ import sys
 
 import pygame
 
-from SCREEN_menu import new_game, game, FIRST_LEVEL, SECOND_LEVEL, THIRD_LEVEL, FOURTH_LEVEL
+from SCREEN_menu import new_game, game, FIRST_LEVEL, SECOND_LEVEL, THIRD_LEVEL, FOURTH_LEVEL, \
+    change_is_open
 from load_img import load_image
 from file_with_const import size, HEIGHT, WIDTH, \
-    all_sprites, btns, settings_spr, tiles_group, player_group, menu_running, FPS, levels, pers_size, \
-    tile_width, tile_height, tile_images, screen, clock, enemy_size, enemy_group, products_group
+    all_sprites, btns, settings_spr, tiles_group, player_group, menu_running, FPS, levels, \
+    pers_size, \
+    tile_width, tile_height, tile_images, screen, clock, enemy_size, enemy_group, products_group, \
+    tile_size, exit_sprite
 from SCREEN_menu import menu
 from SCREEN_start import start_screen
 from SCREEN_story import story
@@ -41,9 +44,10 @@ class Player(pygame.sprite.Sprite):
         else:
             self.image = player_k_image
         self.rect = self.image.get_rect().move(
-            tile_width * pos_x + 15, tile_height * pos_y + 5)
+            tile_width * pos_x + WIDTH // 80, tile_height * pos_y + HEIGHT // 180)
         self.mask = pygame.mask.from_surface(self.image)
         self.pos = (pos_x, pos_y)
+        self.product = False
 
     def move(self, x, y):
         camera.dx -= tile_width * (x - self.pos[0])
@@ -67,7 +71,7 @@ class Enemy(pygame.sprite.Sprite):
         elif type == '/':
             self.image = enemy4_image
         self.rect = self.image.get_rect().move(
-            tile_width * pos_x + 5, tile_height * pos_y + 5)
+            tile_width * pos_x, tile_height * pos_y)
         self.mask = pygame.mask.from_surface(self.image)
         self.pos = (pos_x, pos_y)
         print("enemy init")
@@ -78,10 +82,28 @@ class Product(pygame.sprite.Sprite):
         super().__init__(products_group, all_sprites)
         self.image = pygame.transform.scale(load_image(f'{LEVEL_NOW}.png', color_key=-1), enemy_size)
         self.rect = self.image.get_rect().move(
-            tile_width * pos_x + 5, tile_height * pos_y + 5)
+            tile_width * pos_x, tile_height * pos_y)
         self.mask = pygame.mask.from_surface(self.image)
         self.pos = (pos_x, pos_y)
 
+    def update(self, player):
+        if player.pos == self.pos:
+            player.product = True
+            return True
+
+
+class ExitLevel(pygame.sprite.Sprite):
+    def __init__(self, pos_x, pos_y):
+        super().__init__(exit_sprite)
+        self.image = pygame.transform.scale(load_image('exit.jpg'), tile_size)
+        self.rect = self.image.get_rect().move(
+            tile_width * pos_x, tile_height * pos_y)
+        self.pos = (pos_x, pos_y)
+
+    def update(self, player):
+        if player.pos == self.pos and player.product:
+            change_is_open('open_levels.txt', LEVEL_NOW)
+            return True
 
 class Camera:
     # зададим начальный сдвиг камеры
@@ -117,27 +139,28 @@ def generate_level(level):
                 enemies.append(new_enemy)
             elif level[y][x] == '@':
                 Tile('exit', x, y)
+                exit_new = ExitLevel(x, y)
             elif level[y][x] == '*':
                 Tile('empty', x, y)
                 product = Product(x, y)
     print(enemies)
     # вернем игрока, а также размер поля в клетках
-    return new_player, x, y, enemies, product
+    return new_player, x, y, enemies, product, exit_new
 
 
 def move(player, movement):
     x, y = player.pos
     if movement == "up":
-        if y > 0 and (level_map[y - 1][x] == "." or level_map[y - 1][x] == "@"):
+        if y > 0 and (level_map[y - 1][x] == "." or level_map[y - 1][x] == "@" or level_map[y - 1][x] == '*'):
             player.move(x, y - 1)
     elif movement == "down":
-        if y < max_y and (level_map[y + 1][x] == "." or level_map[y + 1][x] == "@"):
+        if y < max_y and (level_map[y + 1][x] == "." or level_map[y + 1][x] == "@" or level_map[y + 1][x] == '*'):
             player.move(x, y + 1)
     elif movement == "left":
-        if x > 0 and (level_map[y][x - 1] == "." or level_map[y][x - 1] == "@"):
+        if x > 0 and (level_map[y][x - 1] == "." or level_map[y][x - 1] == "@" or level_map[y][x - 1] == '*'):
             player.move(x - 1, y)
     elif movement == "right":
-        if x < max_x and (level_map[y][x + 1] == "." or level_map[y][x + 1] == "@"):
+        if x < max_x and (level_map[y][x + 1] == "." or level_map[y][x + 1] == "@" or level_map[y][x + 1] == '*'):
             player.move(x + 1, y)
 
 
@@ -162,11 +185,11 @@ if start_screen(screen) == 'new game':
 
 while menu_running:
     game('open_levels.txt')
-    print(FIRST_LEVEL, SECOND_LEVEL, THIRD_LEVEL, FOURTH_LEVEL)
-    level = menu(screen)
 
+    level = menu(screen)
+    LEVEL_NOW = level
     level_map = load_level(levels[level])
-    player, max_x, max_y, enemies, product = generate_level(level_map)
+    player, max_x, max_y, enemies, product, exit_new = generate_level(level_map)
 
     running = True
     while running:
@@ -193,6 +216,14 @@ while menu_running:
             camera.apply(sprite)
         for sprite in products_group:
             camera.apply(sprite)
+        if exit_new.update(player):
+            running = False
+            player.kill()
+            for el in tiles_group:
+                el.kill()
+        if product.update(player):
+            product.kill()
+
         screen.fill('black')
         camera.update(player)
         tiles_group.draw(screen)
