@@ -76,6 +76,7 @@ class Enemy(pygame.sprite.Sprite):
             tile_width * pos_x + WIDTH // 120, tile_height * pos_y + HEIGHT // 90)
         self.mask = pygame.mask.from_surface(self.image)
         self.pos = (pos_x, pos_y)
+        self.n = 0
 
     def update(self, *args):
         if args:
@@ -175,6 +176,16 @@ def move(player, movement):
             player.move(x + 1, y)
 
 
+def end_lvl():
+    global running, camera
+    running = False
+    camera.dx = 0
+    camera.dy = 0
+    player.kill()
+    for el in levels_sprites:
+        el.kill()
+
+
 pygame.init()
 
 pygame.display.set_caption('Pizza')
@@ -210,18 +221,12 @@ while menu_running:
                     move(player, "right")
 
                 if event.key == pygame.K_ESCAPE:
-                    running = False
-                    player.kill()
-                    for el in tiles_group:
-                        el.kill()
+                    end_lvl()
                     continue
 
                 elif event.key == pygame.K_q:
                     change_is_open('open_levels.txt', LEVEL_NOW)
-                    player.kill()
-                    for el in levels_sprites:
-                        el.kill()
-                    running = False
+                    end_lvl()
                     continue
 
         for sprite in tiles_group:
@@ -232,14 +237,13 @@ while menu_running:
             camera.apply(sprite)
         for el in enemies:
             if not el.kill_player():
-                running = False
+
+                end_lvl()
                 continue
 
         if exit_new.update(player):
-            running = False
-            player.kill()
-            for el in tiles_group:
-                el.kill()
+
+            end_lvl()
             continue
 
         if product.update(player):
