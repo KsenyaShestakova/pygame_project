@@ -5,7 +5,7 @@ from load_img import load_image
 pygame.init()
 
 USERNAME = os.environ.get("USERNAME")
-size = WIDTH, HEIGHT = 800, 600
+size = WIDTH, HEIGHT = 1080, 810
 FPS = 60
 pers_size = pers_width, pers_height = (WIDTH // 22, HEIGHT // 10)
 enemy_size = enemy_width, enemy_height = (WIDTH // 13, HEIGHT // 10)
@@ -21,6 +21,7 @@ btns = pygame.sprite.Group()
 products_group = pygame.sprite.Group()
 lvl_btn = pygame.sprite.Group()
 exit_sprite = pygame.sprite.Group()
+levels_sprites = pygame.sprite.Group()
 
 menu_running = True
 
@@ -46,3 +47,6 @@ tile_images = {
     'empty': pygame.transform.scale(load_image('TEXTURE_pol.jpg'), tile_size),
     'exit': pygame.transform.scale(load_image('exit.jpg'), tile_size)
 }
+
+player_k_image = pygame.transform.scale(load_image('PERS_K.png', color_key=None), pers_size)
+player_d_image = pygame.transform.scale(load_image('PERS_D.png', color_key=None), pers_size)

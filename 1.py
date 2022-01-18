@@ -1,4 +1,5 @@
 import sys
+import time
 
 import pygame
 
@@ -9,7 +10,8 @@ from file_with_const import size, HEIGHT, WIDTH, \
     all_sprites, btns, settings_spr, tiles_group, player_group, menu_running, FPS, levels, \
     pers_size, \
     tile_width, tile_height, tile_images, screen, clock, enemy_size, enemy_group, products_group, \
-    tile_size, exit_sprite
+    tile_size, exit_sprite, levels_sprites, player_d_image, \
+    player_k_image
 from SCREEN_menu import menu
 from SCREEN_start import start_screen
 from SCREEN_story import story
@@ -18,8 +20,6 @@ from file_new import LEVEL_NOW
 
 
 def load_level(filename):
-    # filename = "data/" + filename
-    # читаем уровень, убирая символы перевода строки
     with open(filename, 'r') as mapFile:
         level_map = [line.strip() for line in mapFile]
 
@@ -30,7 +30,7 @@ def load_level(filename):
 
 class Tile(pygame.sprite.Sprite):
     def __init__(self, tile_type, pos_x, pos_y):
-        super().__init__(tiles_group, all_sprites)
+        super().__init__(tiles_group, levels_sprites)
         self.image = tile_images[tile_type]
         self.rect = self.image.get_rect().move(
             tile_width * pos_x, tile_height * pos_y)
@@ -38,7 +38,7 @@ class Tile(pygame.sprite.Sprite):
 
 class Player(pygame.sprite.Sprite):
     def __init__(self, pos_x, pos_y):
-        super().__init__(player_group, all_sprites)
+        super().__init__(player_group, levels_sprites)
         if LEVEL_NOW % 2 == 0:
             self.image = player_d_image
         else:
@@ -55,31 +55,42 @@ class Player(pygame.sprite.Sprite):
 
         level_map[self.pos[1]][self.pos[0]] = '.'
         self.pos = (x, y)
-        level_map[self.pos[1]][self.pos[0]] = '@'
+        level_map[self.pos[1]][self.pos[0]] = '?'
 
 
 class Enemy(pygame.sprite.Sprite):
-    def __init__(self, type, pos_x, pos_y):
-        super().__init__(enemy_group, all_sprites)
+    enemy1_image = pygame.transform.scale(load_image('bake1.png', color_key=-1), enemy_size)
+    enemy2_image = pygame.transform.scale(load_image('bake2.png', color_key=-1), enemy_size)
+    enemy3_image = pygame.transform.scale(load_image('bake3.png', color_key=-1), enemy_size)
+    enemy4_image = pygame.transform.scale(load_image('bake4.png', color_key=-1), enemy_size)
+
+    def __init__(self, type: str, pos_x, pos_y):
+        super().__init__(enemy_group, levels_sprites)
         self.type = type
         if type == '-':
-            self.image = enemy2_image
+            self.image = Enemy.enemy2_image
         elif type == '+':
-            self.image = enemy1_image
-        elif type == "|":
-            self.image = enemy3_image
-        elif type == '/':
-            self.image = enemy4_image
+            self.image = Enemy.enemy1_image
+
         self.rect = self.image.get_rect().move(
-            tile_width * pos_x, tile_height * pos_y)
+            tile_width * pos_x + WIDTH // 120, tile_height * pos_y + HEIGHT // 90)
         self.mask = pygame.mask.from_surface(self.image)
         self.pos = (pos_x, pos_y)
-        print("enemy init")
+
+    def update(self, *args):
+        if args:
+            pass
+
+    def kill_player(self):
+        if player.pos == self.pos:
+            print(1)
+            return False
+        return True
 
 
 class Product(pygame.sprite.Sprite):
     def __init__(self, pos_x, pos_y):
-        super().__init__(products_group, all_sprites)
+        super().__init__(products_group, levels_sprites)
         self.image = pygame.transform.scale(load_image(f'{LEVEL_NOW}.png', color_key=-1), enemy_size)
         self.rect = self.image.get_rect().move(
             tile_width * pos_x, tile_height * pos_y)
@@ -94,7 +105,7 @@ class Product(pygame.sprite.Sprite):
 
 class ExitLevel(pygame.sprite.Sprite):
     def __init__(self, pos_x, pos_y):
-        super().__init__(exit_sprite)
+        super().__init__(exit_sprite, levels_sprites)
         self.image = pygame.transform.scale(load_image('exit.jpg'), tile_size)
         self.rect = self.image.get_rect().move(
             tile_width * pos_x, tile_height * pos_y)
@@ -104,6 +115,7 @@ class ExitLevel(pygame.sprite.Sprite):
         if player.pos == self.pos and player.product:
             change_is_open('open_levels.txt', LEVEL_NOW)
             return True
+
 
 class Camera:
     # зададим начальный сдвиг камеры
@@ -143,24 +155,23 @@ def generate_level(level):
             elif level[y][x] == '*':
                 Tile('empty', x, y)
                 product = Product(x, y)
-    print(enemies)
-    # вернем игрока, а также размер поля в клетках
+
     return new_player, x, y, enemies, product, exit_new
 
 
 def move(player, movement):
     x, y = player.pos
     if movement == "up":
-        if y > 0 and (level_map[y - 1][x] == "." or level_map[y - 1][x] == "@" or level_map[y - 1][x] == '*'):
+        if y > 0 and (level_map[y - 1][x] in ".@*+-|/"):
             player.move(x, y - 1)
     elif movement == "down":
-        if y < max_y and (level_map[y + 1][x] == "." or level_map[y + 1][x] == "@" or level_map[y + 1][x] == '*'):
+        if y < max_y and (level_map[y + 1][x] in ".@*+-|/"):
             player.move(x, y + 1)
     elif movement == "left":
-        if x > 0 and (level_map[y][x - 1] == "." or level_map[y][x - 1] == "@" or level_map[y][x - 1] == '*'):
+        if x > 0 and (level_map[y][x - 1] in ".@*+-|/"):
             player.move(x - 1, y)
     elif movement == "right":
-        if x < max_x and (level_map[y][x + 1] == "." or level_map[y][x + 1] == "@" or level_map[y][x + 1] == '*'):
+        if x < max_x and (level_map[y][x + 1] in ".@*+-|/"):
             player.move(x + 1, y)
 
 
@@ -168,15 +179,6 @@ pygame.init()
 
 pygame.display.set_caption('Pizza')
 camera = Camera()
-
-
-player_k_image = pygame.transform.scale(load_image('PERS_K.png', color_key=None), pers_size)
-player_d_image = pygame.transform.scale(load_image('PERS_D.png', color_key=None), pers_size)
-
-enemy1_image = pygame.transform.scale(load_image('bake1.png', color_key=-1), enemy_size)
-enemy2_image = pygame.transform.scale(load_image('bake2.png', color_key=-1), enemy_size)
-enemy3_image = pygame.transform.scale(load_image('bake3.png', color_key=-1), enemy_size)
-enemy4_image = pygame.transform.scale(load_image('bake4.png', color_key=-1), enemy_size)
 
 
 if start_screen(screen) == 'new game':
@@ -196,6 +198,7 @@ while menu_running:
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 terminate()
+
             if event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_w or event.key == pygame.K_UP:
                     move(player, 'up')
@@ -205,26 +208,44 @@ while menu_running:
                     move(player, "left")
                 elif event.key == pygame.K_d or event.key == pygame.K_RIGHT:
                     move(player, "right")
-                elif event.key == pygame.K_ESCAPE:
+
+                if event.key == pygame.K_ESCAPE:
                     running = False
                     player.kill()
                     for el in tiles_group:
                         el.kill()
+                    continue
+
+                elif event.key == pygame.K_q:
+                    change_is_open('open_levels.txt', LEVEL_NOW)
+                    player.kill()
+                    for el in levels_sprites:
+                        el.kill()
+                    running = False
+                    continue
+
         for sprite in tiles_group:
             camera.apply(sprite)
         for sprite in enemy_group:
             camera.apply(sprite)
         for sprite in products_group:
             camera.apply(sprite)
+        for el in enemies:
+            if not el.kill_player():
+                running = False
+                continue
+
         if exit_new.update(player):
             running = False
             player.kill()
             for el in tiles_group:
                 el.kill()
+            continue
+
         if product.update(player):
             product.kill()
 
-        screen.fill('black')
+        screen.fill((149, 66, 110))
         camera.update(player)
         tiles_group.draw(screen)
         player_group.draw(screen)
