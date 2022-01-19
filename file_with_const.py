@@ -5,7 +5,7 @@ from load_img import load_image
 pygame.init()
 
 USERNAME = os.environ.get("USERNAME")
-size = WIDTH, HEIGHT = 1080, 810
+size = WIDTH, HEIGHT = 850, 610
 FPS = 60
 pers_size = pers_width, pers_height = (WIDTH // 22, HEIGHT // 10)
 enemy_size = enemy_width, enemy_height = (WIDTH // 13, HEIGHT // 10)
@@ -22,6 +22,8 @@ products_group = pygame.sprite.Group()
 lvl_btn = pygame.sprite.Group()
 exit_sprite = pygame.sprite.Group()
 levels_sprites = pygame.sprite.Group()
+
+IS_PRODUCT = False
 
 menu_running = True
 
