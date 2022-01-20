@@ -1,16 +1,13 @@
-import sys
-import time
-
 import pygame
 
-from SCREEN_menu import new_game, game, FIRST_LEVEL, SECOND_LEVEL, THIRD_LEVEL, FOURTH_LEVEL, \
-    change_is_open
+from SCREEN_dead import you_dead
+from SCREEN_menu import new_game, game, change_is_open
+from file_with_sprite_groups import tiles_group, levels_sprites, player_group, enemy_group, products_group, exit_sprite
 from load_img import load_image
-from file_with_const import size, HEIGHT, WIDTH, \
-    all_sprites, btns, settings_spr, tiles_group, player_group, menu_running, FPS, levels, \
+from file_with_const import size, HEIGHT, WIDTH, menu_running, FPS, levels, \
     pers_size, \
-    tile_width, tile_height, tile_images, screen, clock, enemy_size, enemy_group, products_group, \
-    tile_size, exit_sprite, levels_sprites, player_d_image, \
+    tile_width, tile_height, tile_images, screen, clock, enemy_size,\
+    tile_size, player_d_image, \
     player_k_image
 from SCREEN_menu import menu
 from SCREEN_start import start_screen
@@ -237,7 +234,7 @@ while menu_running:
             camera.apply(sprite)
         for el in enemies:
             if not el.kill_player():
-
+                you_dead(screen)
                 end_lvl()
                 continue
 

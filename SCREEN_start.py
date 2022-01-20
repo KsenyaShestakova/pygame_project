@@ -1,7 +1,8 @@
 import pygame
 
 from buttons import Buttons
-from file_with_const import WIDTH, HEIGHT, btns, all_sprites, clock, FPS
+from file_with_const import WIDTH, HEIGHT, clock, FPS
+from file_with_sprite_groups import btns, all_sprites
 from load_img import load_image
 from terminate import terminate
 from window_with_settings import window_with_settings

@@ -12,16 +12,6 @@ enemy_size = enemy_width, enemy_height = (WIDTH // 13, HEIGHT // 10)
 tile_size = tile_width, tile_height = (WIDTH // 12, WIDTH // 12)
 
 clock = pygame.time.Clock()
-tiles_group = pygame.sprite.Group()
-all_sprites = pygame.sprite.Group()
-enemy_group = pygame.sprite.Group()
-player_group = pygame.sprite.Group()
-settings_spr = pygame.sprite.Group()
-btns = pygame.sprite.Group()
-products_group = pygame.sprite.Group()
-lvl_btn = pygame.sprite.Group()
-exit_sprite = pygame.sprite.Group()
-levels_sprites = pygame.sprite.Group()
 
 IS_PRODUCT = False
 
