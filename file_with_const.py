@@ -2,10 +2,17 @@ import os
 import pygame
 from load_img import load_image
 
+
+def get_size(filename) -> tuple:
+    with open(filename, 'r') as file:
+        size_r = list(line.split() for line in file)
+    size_r = list(map(int, size_r[0]))
+    return tuple(size_r)
+
 pygame.init()
 
 USERNAME = os.environ.get("USERNAME")
-size = WIDTH, HEIGHT = 850, 610
+size = WIDTH, HEIGHT = get_size('window_size')
 FPS = 60
 pers_size = pers_width, pers_height = (WIDTH // 22, HEIGHT // 10)
 enemy_size = enemy_width, enemy_height = (WIDTH // 13, HEIGHT // 10)

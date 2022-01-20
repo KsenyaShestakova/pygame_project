@@ -60,10 +60,7 @@ def menu(surface):
     do_buttons(surface)
 
     while True:
-        lvl_btn.draw(surface)
-        for el in lvl_btn:
-            if el.is_open:
-                el.draw_text(surface, (223, 93, 71))
+
         for event in pygame.event.get():
 
             if event.type == pygame.QUIT:
@@ -74,6 +71,11 @@ def menu(surface):
                 if lvl:
                     file_new.LEVEL_NOW = lvl
                     return lvl
+
+            lvl_btn.draw(surface)
+            for el in lvl_btn:
+                if el.is_open:
+                    el.draw_text(surface, (223, 93, 71))
         pygame.display.flip()
         clock.tick(FPS)
 

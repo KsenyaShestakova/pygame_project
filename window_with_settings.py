@@ -7,8 +7,8 @@ from terminate import terminate
 
 
 def window_with_settings(surface):
-    fon = pygame.transform.scale(load_image('settings_new.png'), (WIDTH // 5 * 3, HEIGHT // 8 * 3))
-    surface.blit(fon, (WIDTH // 8, HEIGHT // 8))
+    fon = pygame.transform.scale(load_image('settings.png'), (WIDTH // 5 * 3, HEIGHT // 5 * 3))
+    surface.blit(fon, (WIDTH // 5, HEIGHT // 5))
 
     while True:
         for event in pygame.event.get():
