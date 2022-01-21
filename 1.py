@@ -45,6 +45,8 @@ class Player(pygame.sprite.Sprite):
         self.mask = pygame.mask.from_surface(self.image)
         self.pos = (pos_x, pos_y)
         self.product = False
+        camera.dx = pos_x
+        camera.dy = pos_y
 
     def move(self, x, y):
         camera.dx -= tile_width * (x - self.pos[0])
@@ -74,10 +76,31 @@ class Enemy(pygame.sprite.Sprite):
         self.mask = pygame.mask.from_surface(self.image)
         self.pos = (pos_x, pos_y)
         self.n = 0
+        self.speed_x = 1
+        self.speed_y = 1
 
     def update(self, *args):
+        self.n += 1
+        if self.n % 60 == 0:
+            if self.type == '-':
+                if level_map[self.pos[1] + self.speed_y][self.pos[0]] in '1234#':
+                    self.speed_y *= -1
+                level_map[self.pos[1]][self.pos[0]] = '.'
+                level_map[self.pos[1] + self.speed_y][self.pos[0]] = '-'
+                self.pos = self.pos[0], self.pos[1] + self.speed_y
+                self.rect = self.image.get_rect().move(
+                    self.rect.x, self.rect.y + tile_height * self.speed_y)
+
+            elif self.type == '+':
+                if level_map[self.pos[1]][self.pos[0] + self.speed_x] in '1234#':
+                    self.speed_x *= -1
+                self.pos = self.pos[0] + self.speed_x, self.pos[1]
+                self.rect = self.image.get_rect().move(
+                    self.rect.x + tile_width * self.speed_x, self.rect.x)
+
         if args:
             pass
+
 
     def kill_player(self):
         if player.pos == self.pos:
@@ -125,6 +148,7 @@ class Camera:
     def apply(self, obj):
         obj.rect.x += self.dx
         obj.rect.y += self.dy
+
 
     # позиционировать камеру на объекте target
     def update(self, target):
@@ -232,6 +256,8 @@ while menu_running:
             camera.apply(sprite)
         for sprite in products_group:
             camera.apply(sprite)
+
+        enemy_group.update()
         for el in enemies:
             if not el.kill_player():
                 you_dead(screen)
