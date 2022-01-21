@@ -5,12 +5,23 @@ from buttons import Buttons
 from file_with_const import WIDTH, HEIGHT, clock, FPS
 from file_with_sprite_groups import redactor_sprites, all_sprites
 from load_img import load_image
-from SCREEN_menu import FIRST_LEVEL, SECOND_LEVEL, THIRD_LEVEL, \
-    FOURTH_LEVEL, FIFTH_LEVEL, SIXTH_LEVEL, SEVENTH_LEVEL, EIGHT_LEVEL
 
 from terminate import terminate
 
 pygame.init()
+
+with open('open_levels.txt', 'r') as file:
+    levels = list(line.split() for line in file)
+levels = list(map(int, levels[0]))
+
+FIRST_LEVEL = levels[0]
+SECOND_LEVEL = levels[1]
+THIRD_LEVEL = levels[2]
+FOURTH_LEVEL = levels[3]
+FIFTH_LEVEL = levels[4]
+SIXTH_LEVEL = levels[5]
+SEVENTH_LEVEL = levels[6]
+EIGHT_LEVEL = levels[7]
 
 
 def redactor(surface):
@@ -40,5 +51,3 @@ def redactor(surface):
 
         pygame.display.flip()
         clock.tick(FPS)
-
-

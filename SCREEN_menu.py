@@ -58,13 +58,17 @@ def menu(surface):
     fon = pygame.transform.scale(load_image('menu_of_lvls.png'), (WIDTH, HEIGHT))
     surface.blit(fon, (0, 0))
     do_buttons(surface)
-
+    pizzas_red_btn = Buttons('BUTTON_go_to_red.png', int(WIDTH * 0.05), int(HEIGHT * 0.85), int(WIDTH * 0.9),
+                             int(HEIGHT * 0.08))
     while True:
 
         for event in pygame.event.get():
-
+            all_sprites.update(event)
             if event.type == pygame.QUIT:
                 terminate()
+            if pizzas_red_btn.is_clicked:
+                print(8)
+                return 'redactor'
 
             for el in lvl_btn:
                 lvl = el.update(event)
@@ -72,10 +76,10 @@ def menu(surface):
                     file_new.LEVEL_NOW = lvl
                     return lvl
 
-            lvl_btn.draw(surface)
-            for el in lvl_btn:
-                if el.is_open:
-                    el.draw_text(surface, (223, 93, 71))
+        all_sprites.draw(surface)
+        for el in lvl_btn:
+            if el.is_open:
+                el.draw_text(surface, (223, 93, 71))
         pygame.display.flip()
         clock.tick(FPS)
 
@@ -106,8 +110,6 @@ def do_buttons(surface):
     for el in lvl_btn:
         if el.is_open:
             el.draw_text(surface, (223, 93, 71))
-
-    pizzas_red_btn = Buttons('BUTTON_go_to_red.png', int(WIDTH * 0.15), int(HEIGHT * 0.75), int(WIDTH * 0.7), int(HEIGHT * 0.2))
 
 
 class LevelBtn(Buttons):

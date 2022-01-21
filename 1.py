@@ -2,6 +2,7 @@ import pygame
 
 from SCREEN_dead import you_dead
 from SCREEN_menu import new_game, game, change_is_open
+from SCREEN_redactor import redactor
 from file_with_sprite_groups import tiles_group, levels_sprites, player_group, enemy_group, products_group, exit_sprite
 from load_img import load_image
 from file_with_const import size, HEIGHT, WIDTH, menu_running, FPS, levels, \
@@ -224,84 +225,87 @@ while menu_running:
     game('open_levels.txt')
 
     level = menu(screen)
-    LEVEL_NOW = level
-    level_map = load_level(levels[level])
-    player, max_x, max_y, enemies, product, exit_new = generate_level(level_map)
+    if type(level) == int:
+        LEVEL_NOW = level
+        level_map = load_level(levels[level])
+        player, max_x, max_y, enemies, product, exit_new = generate_level(level_map)
 
-    running = True
-    n = 0
-    while running:
-        n += 1
-        is_pressed = True
-        for event in pygame.event.get():
-            if event.type == pygame.QUIT:
-                terminate()
+        running = True
+        n = 0
+        while running:
+            n += 1
+            is_pressed = True
+            for event in pygame.event.get():
+                if event.type == pygame.QUIT:
+                    terminate()
 
-            if event.type == pygame.KEYDOWN:
-                if event.key == pygame.K_w or event.key == pygame.K_UP:
+                if event.type == pygame.KEYDOWN:
+                    if event.key == pygame.K_w or event.key == pygame.K_UP:
+                        move(player, 'up')
+                        is_pressed = False
+                    elif event.key == pygame.K_s or event.key == pygame.K_DOWN:
+                        move(player, "down")
+                        is_pressed = False
+                    elif event.key == pygame.K_a or event.key == pygame.K_LEFT:
+                        move(player, "left")
+                        is_pressed = False
+                    elif event.key == pygame.K_d or event.key == pygame.K_RIGHT:
+                        move(player, "right")
+                        is_pressed = False
+                    n -= n % 20
+
+                if event.type == pygame.KEYDOWN:
+                    if event.key == pygame.K_ESCAPE:
+                        end_lvl()
+                        continue
+
+                    elif event.key == pygame.K_q:
+                        change_is_open('open_levels.txt', LEVEL_NOW)
+                        end_lvl()
+                        continue
+
+            if is_pressed:
+                if (pygame.key.get_pressed()[pygame.K_UP] or pygame.key.get_pressed()[pygame.K_w]) and n % 20 == 0:
                     move(player, 'up')
-                    is_pressed = False
-                elif event.key == pygame.K_s or event.key == pygame.K_DOWN:
+                elif (pygame.key.get_pressed()[pygame.K_DOWN] or pygame.key.get_pressed()[pygame.K_s]) and n % 20 == 0:
                     move(player, "down")
-                    is_pressed = False
-                elif event.key == pygame.K_a or event.key == pygame.K_LEFT:
+                elif (pygame.key.get_pressed()[pygame.K_LEFT] or pygame.key.get_pressed()[pygame.K_a]) and n % 20 == 0:
                     move(player, "left")
-                    is_pressed = False
-                elif event.key == pygame.K_d or event.key == pygame.K_RIGHT:
+                elif (pygame.key.get_pressed()[pygame.K_RIGHT] or pygame.key.get_pressed()[pygame.K_d]) and n % 20 == 0:
                     move(player, "right")
-                    is_pressed = False
-                n -= n % 20
 
-            if event.type == pygame.KEYDOWN:
-                if event.key == pygame.K_ESCAPE:
+            for sprite in tiles_group:
+                camera.apply(sprite)
+            for sprite in enemy_group:
+                camera.apply(sprite)
+            for sprite in products_group:
+                camera.apply(sprite)
+
+            for el in enemies:
+                el.run()
+                if not el.kill_player():
+                    you_dead(screen)
                     end_lvl()
                     continue
 
-                elif event.key == pygame.K_q:
-                    change_is_open('open_levels.txt', LEVEL_NOW)
-                    end_lvl()
-                    continue
+            if exit_new.update(player):
 
-        if is_pressed:
-            if (pygame.key.get_pressed()[pygame.K_UP] or pygame.key.get_pressed()[pygame.K_w]) and n % 20 == 0:
-                move(player, 'up')
-            elif (pygame.key.get_pressed()[pygame.K_DOWN] or pygame.key.get_pressed()[pygame.K_s]) and n % 20 == 0:
-                move(player, "down")
-            elif (pygame.key.get_pressed()[pygame.K_LEFT] or pygame.key.get_pressed()[pygame.K_a]) and n % 20 == 0:
-                move(player, "left")
-            elif (pygame.key.get_pressed()[pygame.K_RIGHT] or pygame.key.get_pressed()[pygame.K_d]) and n % 20 == 0:
-                move(player, "right")
-
-        for sprite in tiles_group:
-            camera.apply(sprite)
-        for sprite in enemy_group:
-            camera.apply(sprite)
-        for sprite in products_group:
-            camera.apply(sprite)
-
-        for el in enemies:
-            el.run()
-            if not el.kill_player():
-                you_dead(screen)
                 end_lvl()
                 continue
 
-        if exit_new.update(player):
+            if product.update(player):
+                product.kill()
 
-            end_lvl()
-            continue
-
-        if product.update(player):
-            product.kill()
-
-        screen.fill((149, 66, 110))
-        camera.update(player)
-        tiles_group.draw(screen)
-        player_group.draw(screen)
-        enemy_group.draw(screen)
-        products_group.draw(screen)
-        pygame.display.flip()
-        clock.tick(FPS)
+            screen.fill((149, 66, 110))
+            camera.update(player)
+            tiles_group.draw(screen)
+            player_group.draw(screen)
+            enemy_group.draw(screen)
+            products_group.draw(screen)
+            pygame.display.flip()
+            clock.tick(FPS)
+    else:
+        redactor(screen)
 
 
 pygame.display.quit()

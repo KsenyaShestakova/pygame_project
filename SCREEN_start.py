@@ -30,9 +30,13 @@ def start_screen(surface):
                     settings.is_clicked = False"""
 
                 if new_game.is_clicked:
+                    for el in all_sprites:
+                        el.kill()
                     return 'new game'
 
                 if old_game.is_clicked:
+                    for el in all_sprites:
+                        el.kill()
                     return 'old game'
 
         pygame.display.flip()
