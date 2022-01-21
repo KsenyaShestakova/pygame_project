@@ -58,10 +58,10 @@ class Player(pygame.sprite.Sprite):
 
 
 class Enemy(pygame.sprite.Sprite):
-    enemy1_image = pygame.transform.scale(load_image('bake1.png', color_key=-1), enemy_size)
-    enemy2_image = pygame.transform.scale(load_image('bake2.png', color_key=-1), enemy_size)
-    enemy3_image = pygame.transform.scale(load_image('bake3.png', color_key=-1), enemy_size)
-    enemy4_image = pygame.transform.scale(load_image('bake4.png', color_key=-1), enemy_size)
+    enemy1_image = pygame.transform.scale(load_image('bake1.png', color_key=-1, papka='enemy'), enemy_size)
+    enemy2_image = pygame.transform.scale(load_image('bake2.png', color_key=-1, papka='enemy'), enemy_size)
+    """"enemy3_image = pygame.transform.scale(load_image('bake3.png', color_key=-1), enemy_size)
+    enemy4_image = pygame.transform.scale(load_image('bake4.png', color_key=-1), enemy_size)"""
 
     def __init__(self, type: str, pos_x, pos_y):
         super().__init__(enemy_group, levels_sprites)
@@ -80,6 +80,16 @@ class Enemy(pygame.sprite.Sprite):
         self.speed_y = 1
 
     def update(self, *args):
+        if args:
+            pass
+
+    def kill_player(self):
+        if player.pos == self.pos:
+            print(1)
+            return False
+        return True
+
+    def run(self):
         self.n += 1
         if self.n % 60 == 0:
             if self.type == '-':
@@ -94,25 +104,17 @@ class Enemy(pygame.sprite.Sprite):
             elif self.type == '+':
                 if level_map[self.pos[1]][self.pos[0] + self.speed_x] in '1234#':
                     self.speed_x *= -1
+                level_map[self.pos[1]][self.pos[0]] = '.'
+                level_map[self.pos[1]][self.pos[0] + self.speed_x] = '-'
                 self.pos = self.pos[0] + self.speed_x, self.pos[1]
                 self.rect = self.image.get_rect().move(
-                    self.rect.x + tile_width * self.speed_x, self.rect.x)
-
-        if args:
-            pass
-
-
-    def kill_player(self):
-        if player.pos == self.pos:
-            print(1)
-            return False
-        return True
+                    self.rect.x + tile_width * self.speed_x, self.rect.y)
 
 
 class Product(pygame.sprite.Sprite):
     def __init__(self, pos_x, pos_y):
         super().__init__(products_group, levels_sprites)
-        self.image = pygame.transform.scale(load_image(f'{LEVEL_NOW}.png', color_key=-1), enemy_size)
+        self.image = pygame.transform.scale(load_image(f'{LEVEL_NOW}.png', color_key=-1, papka='product_lvl'), enemy_size)
         self.rect = self.image.get_rect().move(
             tile_width * pos_x, tile_height * pos_y)
         self.mask = pygame.mask.from_surface(self.image)
@@ -127,7 +129,7 @@ class Product(pygame.sprite.Sprite):
 class ExitLevel(pygame.sprite.Sprite):
     def __init__(self, pos_x, pos_y):
         super().__init__(exit_sprite, levels_sprites)
-        self.image = pygame.transform.scale(load_image('exit.jpg'), tile_size)
+        self.image = pygame.transform.scale(load_image('exit.jpg', papka='texture'), tile_size)
         self.rect = self.image.get_rect().move(
             tile_width * pos_x, tile_height * pos_y)
         self.pos = (pos_x, pos_y)
@@ -139,18 +141,14 @@ class ExitLevel(pygame.sprite.Sprite):
 
 
 class Camera:
-    # зададим начальный сдвиг камеры
     def __init__(self):
         self.dx = 0
         self.dy = 0
 
-    # сдвинуть объект obj на смещение камеры
     def apply(self, obj):
         obj.rect.x += self.dx
         obj.rect.y += self.dy
 
-
-    # позиционировать камеру на объекте target
     def update(self, target):
         self.dx = 0
         self.dy = 0
@@ -226,7 +224,10 @@ while menu_running:
     player, max_x, max_y, enemies, product, exit_new = generate_level(level_map)
 
     running = True
+    n = 0
     while running:
+        n += 1
+        is_pressed = True
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 terminate()
@@ -234,13 +235,19 @@ while menu_running:
             if event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_w or event.key == pygame.K_UP:
                     move(player, 'up')
+                    is_pressed = False
                 elif event.key == pygame.K_s or event.key == pygame.K_DOWN:
                     move(player, "down")
+                    is_pressed = False
                 elif event.key == pygame.K_a or event.key == pygame.K_LEFT:
                     move(player, "left")
+                    is_pressed = False
                 elif event.key == pygame.K_d or event.key == pygame.K_RIGHT:
                     move(player, "right")
+                    is_pressed = False
+                n -= n % 20
 
+            if event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_ESCAPE:
                     end_lvl()
                     continue
@@ -250,6 +257,16 @@ while menu_running:
                     end_lvl()
                     continue
 
+        if is_pressed:
+            if (pygame.key.get_pressed()[pygame.K_UP] or pygame.key.get_pressed()[pygame.K_w]) and n % 20 == 0:
+                move(player, 'up')
+            elif (pygame.key.get_pressed()[pygame.K_DOWN] or pygame.key.get_pressed()[pygame.K_s]) and n % 20 == 0:
+                move(player, "down")
+            elif (pygame.key.get_pressed()[pygame.K_LEFT] or pygame.key.get_pressed()[pygame.K_a]) and n % 20 == 0:
+                move(player, "left")
+            elif (pygame.key.get_pressed()[pygame.K_RIGHT] or pygame.key.get_pressed()[pygame.K_d]) and n % 20 == 0:
+                move(player, "right")
+
         for sprite in tiles_group:
             camera.apply(sprite)
         for sprite in enemy_group:
@@ -257,8 +274,8 @@ while menu_running:
         for sprite in products_group:
             camera.apply(sprite)
 
-        enemy_group.update()
         for el in enemies:
+            el.run()
             if not el.kill_player():
                 you_dead(screen)
                 end_lvl()

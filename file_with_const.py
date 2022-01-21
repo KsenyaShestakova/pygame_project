@@ -9,6 +9,7 @@ def get_size(filename) -> tuple:
     size_r = list(map(int, size_r[0]))
     return tuple(size_r)
 
+
 pygame.init()
 
 USERNAME = os.environ.get("USERNAME")
@@ -38,14 +39,14 @@ levels = {
 }
 
 tile_images = {
-    '0': pygame.transform.scale(load_image('TEXTURE_0.jpg'), tile_size),
-    '1': pygame.transform.scale(load_image('TEXTURE_1.jpg'), tile_size),
-    '2': pygame.transform.scale(load_image('TEXTURE_2.jpg'), tile_size),
-    '3': pygame.transform.scale(load_image('TEXTURE_3.jpg'), tile_size),
-    '#': pygame.transform.scale(load_image('TEXTURE_wall.jpg'), tile_size),
-    'empty': pygame.transform.scale(load_image('TEXTURE_pol.jpg'), tile_size),
-    'exit': pygame.transform.scale(load_image('exit.jpg'), tile_size)
+    '0': pygame.transform.scale(load_image('TEXTURE_0.jpg', papka='texture'), tile_size),
+    '1': pygame.transform.scale(load_image('TEXTURE_1.jpg', papka='texture'), tile_size),
+    '2': pygame.transform.scale(load_image('TEXTURE_2.jpg', papka='texture'), tile_size),
+    '3': pygame.transform.scale(load_image('TEXTURE_3.jpg', papka='texture'), tile_size),
+    '#': pygame.transform.scale(load_image('TEXTURE_wall.jpg', papka='texture'), tile_size),
+    'empty': pygame.transform.scale(load_image('TEXTURE_pol.jpg', papka='texture'), tile_size),
+    'exit': pygame.transform.scale(load_image('exit.jpg', papka='texture'), tile_size)
 }
 
-player_k_image = pygame.transform.scale(load_image('PERS_K.png', color_key=None), pers_size)
-player_d_image = pygame.transform.scale(load_image('PERS_D.png', color_key=None), pers_size)
+player_k_image = pygame.transform.scale(load_image('PERS_K.png', color_key=None, papka='pers'), pers_size)
+player_d_image = pygame.transform.scale(load_image('PERS_D.png', color_key=None, papka='pers'), pers_size)

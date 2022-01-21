@@ -107,6 +107,8 @@ def do_buttons(surface):
         if el.is_open:
             el.draw_text(surface, (223, 93, 71))
 
+    pizzas_red_btn = Buttons('BUTTON_go_to_red.png', int(WIDTH * 0.15), int(HEIGHT * 0.75), int(WIDTH * 0.7), int(HEIGHT * 0.2))
+
 
 class LevelBtn(Buttons):
     level_img_otkr = 'BUTTON_open_level.png'

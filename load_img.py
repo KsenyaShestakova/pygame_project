@@ -2,8 +2,11 @@ import os
 import pygame
 
 
-def load_image(name, color_key=None):
-    fullname = os.path.join('data', name)
+def load_image(name, color_key=None, papka=None):
+    if papka:
+        fullname = os.path.join('data', papka, name)
+    else:
+        fullname = os.path.join('data', name)
     try:
         image = pygame.image.load(fullname)
     except pygame.error as message:

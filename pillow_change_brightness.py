@@ -23,4 +23,4 @@ def box(filename, endname):
     res.save(endname)
 
 
-box('regulator_for_volume.png', 'regulator_for_volume_change.png')
+box('BUTTON_go_to_red.png', 'BUTTON_go_to_red_change.png')
