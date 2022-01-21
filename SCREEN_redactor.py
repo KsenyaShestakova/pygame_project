@@ -14,34 +14,13 @@ pygame.init()
 
 
 def redactor(surface):
-    fon = pygame.transform.scale(load_image('red.png'), (WIDTH, HEIGHT))
+    levels = [FIRST_LEVEL, SECOND_LEVEL, THIRD_LEVEL, FOURTH_LEVEL, FIFTH_LEVEL,
+              SIXTH_LEVEL, SEVENTH_LEVEL, EIGHT_LEVEL]
+    n = levels.count(True)
+    fon = pygame.transform.scale(load_image(f'red{n}.png'), (WIDTH, HEIGHT))
+    sauce = pygame.transform.scale(load_image('sauce_on.png'), (WIDTH, HEIGHT))
+    cheese = pygame.transform.scale(load_image('cheese_on.png'), (WIDTH, HEIGHT))
     surface.blit(fon, (0, 0))
-
-    if FIRST_LEVEL:
-        pastry = Buttons('1_red.png', WIDTH // 60, HEIGHT // 5.2941, WIDTH // 2.1938,
-                         HEIGHT // 1.6453)
-    if SECOND_LEVEL:
-        cheese = Buttons('2_red.jpg', WIDTH // 1.6, HEIGHT // 1.2295, WIDTH // 7.5949,
-                         HEIGHT // 14.2857)
-    if THIRD_LEVEL:
-        sauce = Buttons('3_red.jpg', WIDTH // 1.6 + WIDTH // 7.5949, HEIGHT // 1.2295 + HEIGHT // 14.2857,
-                        WIDTH // 7.5949, HEIGHT // 14.2857)
-    if FOURTH_LEVEL:
-        tomato = Buttons('4_red.png', WIDTH // 1.9261, HEIGHT // 22.5, WIDTH // 4.3796,
-                         HEIGHT // 2.6163)
-    if FIFTH_LEVEL:
-        pepperoni = Buttons('5_red.png', WIDTH // 1.9261 + WIDTH // 4.3796, HEIGHT // 22.5 + HEIGHT // 2.6163,
-                            WIDTH // 4.3796, HEIGHT // 2.6163)
-    if SIXTH_LEVEL:
-        pass
-        #  pepper = Buttons()
-    if SEVENTH_LEVEL:
-        pass
-        #  onion = Buttons()
-    if EIGHT_LEVEL:
-        pass
-        #  olive = Buttons()
-    all_sprites.draw(surface)
 
     while True:
 
@@ -50,7 +29,13 @@ def redactor(surface):
             if event.type == pygame.QUIT:
                 terminate()
 
-            if event.type == pygame.MOUSEBUTTONDOWN:
+            if event.type == pygame.MOUSEBUTTONDOWN and FIRST_LEVEL:
+                if (WIDTH // 1.9355) <= event.pos[0] <= (WIDTH // 1.4052) and \
+                        (HEIGHT // 45) <= event.pos[1] <= (HEIGHT // 3.169) and THIRD_LEVEL:
+                    surface.blit(sauce, (0, 0))
+                if (WIDTH // 1.362) <= event.pos[0] <= (WIDTH // 1.0345) and \
+                        (HEIGHT // 37.5) <= event.pos[1] <= (HEIGHT // 3.3582) and SECOND_LEVEL:
+                    surface.blit(cheese, (0, 0))
 
 
         pygame.display.flip()
