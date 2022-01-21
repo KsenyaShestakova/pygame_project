@@ -66,13 +66,10 @@ class Enemy(pygame.sprite.Sprite):
     def __init__(self, type: str, pos_x, pos_y):
         super().__init__(enemy_group, levels_sprites)
         self.type = type
-        if type == '-':
-            self.image = Enemy.enemy2_image
-        elif type == '+':
-            self.image = Enemy.enemy1_image
+        self.image = Enemy.enemy1_image
 
         self.rect = self.image.get_rect().move(
-            tile_width * pos_x + WIDTH // 120, tile_height * pos_y + HEIGHT // 90)
+            tile_width * pos_x + WIDTH // 240, tile_height * pos_y + HEIGHT // 180)
         self.mask = pygame.mask.from_surface(self.image)
         self.pos = (pos_x, pos_y)
         self.n = 0
@@ -100,6 +97,10 @@ class Enemy(pygame.sprite.Sprite):
                 self.pos = self.pos[0], self.pos[1] + self.speed_y
                 self.rect = self.image.get_rect().move(
                     self.rect.x, self.rect.y + tile_height * self.speed_y)
+                if self.speed_y < 0:
+                    self.image = Enemy.enemy2_image
+                else:
+                    self.image = Enemy.enemy1_image
 
             elif self.type == '+':
                 if level_map[self.pos[1]][self.pos[0] + self.speed_x] in '1234#':
@@ -109,6 +110,10 @@ class Enemy(pygame.sprite.Sprite):
                 self.pos = self.pos[0] + self.speed_x, self.pos[1]
                 self.rect = self.image.get_rect().move(
                     self.rect.x + tile_width * self.speed_x, self.rect.y)
+                if self.speed_x < 0:
+                    self.image = Enemy.enemy1_image
+                else:
+                    self.image = Enemy.enemy2_image
 
 
 class Product(pygame.sprite.Sprite):

@@ -213,7 +213,7 @@ tile_width = tile_height = 100
 
 start_screen()
 story()
-level_map = load_level('level_3.txt')
+level_map = load_level('../levels/level_3.txt')
 player, max_x, max_y = generate_level(level_map)
 
 running = True

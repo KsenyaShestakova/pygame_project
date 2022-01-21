@@ -13,7 +13,7 @@ def get_size(filename) -> tuple:
 pygame.init()
 
 USERNAME = os.environ.get("USERNAME")
-size = WIDTH, HEIGHT = 800, 600#  get_size('window_size')
+size = WIDTH, HEIGHT = get_size('window_size')
 FPS = 60
 pers_size = pers_width, pers_height = (WIDTH // 22, HEIGHT // 10)
 enemy_size = enemy_width, enemy_height = (WIDTH // 13, HEIGHT // 10)
@@ -28,14 +28,14 @@ menu_running = True
 screen = pygame.display.set_mode(size)
 
 levels = {
-    1: 'level_1.txt',
-    2: 'level_2.txt',
-    3: 'level_3.txt',
-    4: 'level_4.txt',
-    5: 'level_5.txt',
-    6: 'level_6.txt',
-    7: 'level_7.txt',
-    8: 'level_8.txt'
+    1: os.path.join('levels', 'level_1.txt'),
+    2: os.path.join('levels', 'level_2.txt'),
+    3: os.path.join('levels', 'level_3.txt'),
+    4: os.path.join('levels', 'level_4.txt'),
+    5: os.path.join('levels', 'level_5.txt'),
+    6: os.path.join('levels', 'level_6.txt'),
+    7: os.path.join('levels', 'level_7.txt'),
+    8: os.path.join('levels', 'level_8.txt')
 }
 
 tile_images = {
