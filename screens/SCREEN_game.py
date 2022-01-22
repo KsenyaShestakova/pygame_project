@@ -1,3 +1,5 @@
+import os.path
+
 import pygame
 
 from screens.SCREEN_dead import you_dead
@@ -30,7 +32,7 @@ def play(surface, size: (int, int), player, camera, level_map, max_s: (int, int)
                     return
 
                 elif event.key == pygame.K_q:
-                    change_is_open('../game_func/open_levels.txt', lvl_now)
+                    change_is_open('open_levels.txt', lvl_now)
                     end_lvl(camera, player)
                     return
 

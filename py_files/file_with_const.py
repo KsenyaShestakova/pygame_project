@@ -12,8 +12,7 @@ def get_size(filename) -> tuple:
 
 pygame.init()
 
-USERNAME = os.environ.get("USERNAME")
-size = WIDTH, HEIGHT = get_size('window_size')
+size = WIDTH, HEIGHT = get_size(os.path.join('py_files', 'window_size.txt'))
 FPS = 60
 pers_size = pers_width, pers_height = (WIDTH // 22, HEIGHT // 10)
 enemy_size = enemy_width, enemy_height = (WIDTH // 13, HEIGHT // 10)

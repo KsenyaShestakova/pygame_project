@@ -90,7 +90,7 @@ def generate_level(level, lvl_now):
                 enemies.append(new_enemy)
             elif level[y][x] == '@':
                 Tile('exit', x, y)
-                exit_new = ExitLevel(x, y)
+                exit_new = ExitLevel(x, y, lvl_now)
             elif level[y][x] == '*':
                 Tile('empty', x, y)
                 product = Product(x, y, lvl_now)

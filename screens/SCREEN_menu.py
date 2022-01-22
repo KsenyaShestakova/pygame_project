@@ -69,7 +69,6 @@ def menu(surface):
             if event.type == pygame.QUIT:
                 terminate()
             if pizzas_red_btn.is_clicked:
-                print(8)
                 return 'redactor'
 
             for el in lvl_btn:
