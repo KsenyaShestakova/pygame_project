@@ -1,5 +1,5 @@
 import pygame
-from file_with_sprite_groups import btns, all_sprites
+from py_files.file_with_sprite_groups import btns, all_sprites
 from load_img import load_image
 
 

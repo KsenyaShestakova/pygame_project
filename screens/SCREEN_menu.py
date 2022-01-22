@@ -1,9 +1,11 @@
+import os.path
+
 import pygame
 
-import file_new
-from buttons import Buttons
-from file_with_const import WIDTH, HEIGHT, clock, FPS
-from file_with_sprite_groups import lvl_btn, all_sprites
+import py_files.file_new as file_new
+from classes.buttons import Buttons
+from py_files.file_with_const import WIDTH, HEIGHT, clock, FPS
+from py_files.file_with_sprite_groups import lvl_btn, all_sprites
 from load_img import load_image
 
 from terminate import terminate
@@ -24,7 +26,7 @@ OLD_GAME = None
 
 def change_is_open(filename, level: int):
     global OLD_GAME
-    with open(filename, 'w') as file:
+    with open(os.path.join('game_func', filename), 'w') as file:
         OLD_GAME[level - 1] = 1
         OLD_GAME = list(map(str, OLD_GAME))
         file.write(' '.join(OLD_GAME))

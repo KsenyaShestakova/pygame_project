@@ -2,9 +2,9 @@ import sys
 
 import pygame
 from load_img import load_image
-from file_with_const import size, HEIGHT, WIDTH,\
+from py_files.file_with_const import size, HEIGHT, WIDTH,\
     all_sprites, btns, settings_spr, tiles_group, player_group
-from buttons import Buttons
+from classes.buttons import Buttons
 
 
 def start_screen():

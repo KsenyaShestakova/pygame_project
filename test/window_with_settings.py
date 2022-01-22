@@ -1,6 +1,6 @@
 import pygame
 
-from file_with_const import WIDTH, HEIGHT, clock, FPS
+from py_files.file_with_const import WIDTH, HEIGHT, clock, FPS
 from file_with_sprite_groups import settings_spr, all_sprites
 from load_img import load_image
 from terminate import terminate
