@@ -1,15 +1,7 @@
 import os
-
 import pygame
-
-import py_files.file_new
-from classes.buttons import Buttons
-from py_files.file_with_const import WIDTH, HEIGHT, clock, FPS
-from py_files.file_with_sprite_groups import redactor_sprites, all_sprites
+from py_files.file_with_const import clock, FPS
 from load_img import load_image
-from screens.SCREEN_menu import FIRST_LEVEL, SECOND_LEVEL, THIRD_LEVEL, \
-    FOURTH_LEVEL, FIFTH_LEVEL, SIXTH_LEVEL, SEVENTH_LEVEL, EIGHT_LEVEL
-
 from terminate import terminate
 
 pygame.init()
