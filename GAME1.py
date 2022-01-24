@@ -121,7 +121,7 @@ while menu_running:
              enemies, product, exit_new, LEVEL_NOW)
 
     else:
-        redactor(screen, (1200, 900))
+        redactor(screen, (WIDTH, HEIGHT))
 
 
 pygame.display.quit()
