@@ -16,11 +16,11 @@ def box(filename, endname):
                 pixels2[i, j] = 255, sr_zn, sr_zn
             else:
                 pixels2[i, j] = int(pixels[i, j][0]) + 50, sr_zn, sr_zn
-            pixels2[i, j] = int(pixels[i, j][0]) - 50,\
-                            int(pixels[i, j][1]) - 50,\
-                            int(pixels[i, j][2]) - 50
+            pixels2[i, j] = int(int(pixels[i, j][0]) - 50),\
+                            int(int(pixels[i, j][1]) - 50),\
+                            int(int(pixels[i, j][2]) - 50)
     endname = os.path.join('data', endname)
     res.save(endname)
 
 
-box('BUTTON_go_to_red.png', 'BUTTON_go_to_red_change.png')
+box('save_btn.jpg', 'save_btn_change.jpg')

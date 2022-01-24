@@ -6,7 +6,7 @@ from terminate import terminate
 
 
 def you_dead(surface):
-    """fon = pygame.transform.scale(load_image('dead_pechkoy.jpg'), (WIDTH, HEIGHT))
+    """fon = pygame.transform.scale(load_image('save_btn.jpg'), (WIDTH, HEIGHT))
     surface.blit(fon, (0, 0))
 
     font = pygame.font.SysFont('arial', HEIGHT // 25)

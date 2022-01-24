@@ -38,7 +38,7 @@ class Enemy(pygame.sprite.Sprite):
         self.n += 1
         if self.n % 60 == 0:
             if self.type == '-':
-                if level_map[self.pos[1] + self.speed_y][self.pos[0]] in '1234#':
+                if level_map[self.pos[1] + self.speed_y][self.pos[0]] in '1230#':
                     self.speed_y *= -1
                 level_map[self.pos[1]][self.pos[0]] = '.'
                 level_map[self.pos[1] + self.speed_y][self.pos[0]] = '-'
@@ -51,7 +51,7 @@ class Enemy(pygame.sprite.Sprite):
                     self.image = Enemy.enemy1_image
 
             elif self.type == '+':
-                if level_map[self.pos[1]][self.pos[0] + self.speed_x] in '1234#':
+                if level_map[self.pos[1]][self.pos[0] + self.speed_x] in '1230#':
                     self.speed_x *= -1
                 level_map[self.pos[1]][self.pos[0]] = '.'
                 level_map[self.pos[1]][self.pos[0] + self.speed_x] = '-'
