@@ -8,11 +8,14 @@ from terminate import terminate
 
 
 def window_with_settings(surface):
-    surface.blit(load_image('fon_change.png'), (0, 0))
-    save_btn = Buttons('save_btn.jpg', WIDTH // 12 * 2, HEIGHT // 7 * 4, 300, 80)
-    return_btn = Buttons('save_btn.jpg', WIDTH // 12 * 6, HEIGHT // 7 * 4, 300, 80)
+    surface.blit(pygame.transform.scale(load_image('fon_change.png'), (WIDTH, HEIGHT)), (0, 0))
+    save_btn = Buttons('save_btn.jpg', WIDTH // 12 * 3, HEIGHT // 9 * 6, WIDTH // 4, HEIGHT // 12)
+    return_btn = Buttons('save_btn.jpg', WIDTH // 12 * 6, HEIGHT // 9 * 6, WIDTH // 4, HEIGHT // 12)
     save_btn.add(settings_spr)
     return_btn.add(settings_spr)
+
+    btn_1200_900 = Buttons('save_btn.jpg', WIDTH // 12 * 6, HEIGHT // 7 * 2, WIDTH // 4, HEIGHT // 12)
+    btn_1200_900.add(settings_spr)
     fon = pygame.transform.scale(load_image('settings.png'), (WIDTH // 5 * 3, HEIGHT // 5 * 3))
     surface.blit(fon, (WIDTH // 5, HEIGHT // 5))
 
@@ -23,12 +26,12 @@ def window_with_settings(surface):
                 terminate()
 
             elif event.type == pygame.KEYDOWN:
-                if event.key == pygame.K_ESCAPE:
+                if event.key == pygame.K_ESCAPE or return_btn.is_clicked:
                     for el in settings_spr:
                         el.kill()
                     return
-
-
+                elif event.key == pygame.K_KP_ENTER:
+                    save()
 
         settings_spr.draw(surface)
         pygame.display.flip()
@@ -51,13 +54,3 @@ class SettingsWindow(pygame.sprite.Sprite):
             self.is_st += 1
 
             print(1)
-
-
-class VolumeControl(pygame.sprite.Sprite):
-    def __init__(self):
-        super().__init__(settings_spr, all_sprites)
-        self.image_load = load_image("regulator_for_volume.png")
-        self.change_img = load_image("regulator_for_volume_change.png", color_key=-1)
-
-        self.nach = WIDTH // 12
-        self.kon = WIDTH - WIDTH // 12
