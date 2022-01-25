@@ -3,6 +3,8 @@ import pygame
 from py_files.file_with_const import clock, FPS
 from load_img import load_image
 from terminate import terminate
+from classes.buttons import Buttons
+from py_files.file_with_sprite_groups import btns, all_sprites
 
 pygame.init()
 
