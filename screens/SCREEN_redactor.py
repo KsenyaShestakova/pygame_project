@@ -7,6 +7,7 @@ from classes.buttons import Buttons
 from py_files.file_with_sprite_groups import btns, all_sprites
 
 pygame.init()
+red_group = pygame.sprite.Group()
 
 
 def redactor(surface, size: (int, int)):
@@ -29,21 +30,48 @@ def redactor(surface, size: (int, int)):
     fon = pygame.transform.scale(load_image(f'red{n}.png'), (WIDTH, HEIGHT))
     sauce = pygame.transform.scale(load_image('sauce_on.png'), (WIDTH, HEIGHT))
     cheese = pygame.transform.scale(load_image('cheese_on.png'), (WIDTH, HEIGHT))
-    tomato = pygame.transform.scale(load_image('tomato_on.png'), (WIDTH // 15, HEIGHT // 15))
-    pepperoni = pygame.transform.scale(load_image('pepperoni_on.png'), (WIDTH // 15, HEIGHT // 15))
+    tomato = pygame.transform.scale(load_image('tomato_on.png'), (WIDTH // 15, HEIGHT // 11.25))
+    pepperoni = pygame.transform.scale(load_image('pepperoni_on.png'), (WIDTH // 15, HEIGHT // 11.25))
+    bake = pygame.transform.scale(load_image('baking.png'), (WIDTH, HEIGHT))
+
     centre = (WIDTH // 60 + (WIDTH // 2.087) // 2, HEIGHT // 5 + (HEIGHT // 1.6981) // 2)
     radius = WIDTH // 4.1667
     surface.blit(fon, (0, 0))
 
+    btn_bake = Buttons('baking.jpg', WIDTH // 1.96, HEIGHT // 1.22, WIDTH // 8.96, HEIGHT // 6.72)
+    btn_go_menu = Buttons('go_to_menu.jpg', WIDTH // 40, HEIGHT // 30, WIDTH // 2.08, HEIGHT // 7.03)
+    btn_clean = Buttons('clean.jpg', WIDTH // 40, HEIGHT // 1.22, WIDTH // 2.08, HEIGHT // 6.72)
+    btn_clean.add(red_group)
+    btn_bake.add(red_group)
+    btn_go_menu.add(red_group)
+
     while True:
 
+        red_group.draw(surface)
         for event in pygame.event.get():
-
+            red_group.update(event)
             if event.type == pygame.QUIT:
                 terminate()
+
+            if event.type == pygame.MOUSEBUTTONDOWN and btn_go_menu.is_clicked:
+                for el in red_group:
+                    el.kill()
+                return
+
+            if event.type == pygame.MOUSEBUTTONDOWN and btn_clean.is_clicked:
+                surface.blit(fon, (0, 0))
+                btn_clean.is_clicked = False
+
+            if event.type == pygame.MOUSEBUTTONDOWN and btn_bake.is_clicked:
+                surface.blit(bake, (0, 0))
+                btn_bake.is_clicked = False
+
             if event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_ESCAPE:
+                    for el in red_group:
+                        el.kill()
                     return
+
             if event.type == pygame.MOUSEBUTTONDOWN and FIRST_LEVEL:
                 if (WIDTH // 1.9355) <= event.pos[0] <= (WIDTH // 1.4052) and \
                         (HEIGHT // 45) <= event.pos[1] <= (HEIGHT // 3.169) and THIRD_LEVEL:
@@ -85,9 +113,5 @@ def redactor(surface, size: (int, int)):
                                 if event.key == pygame.K_ESCAPE:
                                     return
 
-
-
-
         pygame.display.flip()
         clock.tick(FPS)
-
