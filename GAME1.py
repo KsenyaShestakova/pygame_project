@@ -79,23 +79,18 @@ def generate_level(level, lvl_now):
         for x in range(len(level[y])):
             if level[y][x] in '.':
                 Tile('empty', x, y)
-
             elif level[y][x] in '1230#':
                 Tile(str(level[y][x]), x, y)
-
             elif level[y][x] == '?':
                 Tile('empty', x, y)
                 new_player = Player(x, y)
-
             elif level[y][x] in '+-|/':
                 Tile('empty', x, y)
                 new_enemy = Enemy(str(level[y][x]), x, y)
                 enemies.append(new_enemy)
-
             elif level[y][x] == '@':
                 Tile('exit', x, y)
                 exit_new = ExitLevel(x, y, lvl_now)
-
             elif level[y][x] == '*':
                 Tile('empty', x, y)
                 product = Product(x, y, lvl_now)
@@ -118,10 +113,8 @@ while menu_running:
     level = menu(screen)
 
     if type(level) == int:
-
         LEVEL_NOW = level
         level_map = load_level(levels[level])
-
         player, max_x, max_y, enemies, product, exit_new = generate_level(level_map, LEVEL_NOW)
         play(screen, (WIDTH, HEIGHT), player,
              camera, level_map, (max_x, max_y),
