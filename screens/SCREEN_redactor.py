@@ -31,6 +31,9 @@ def redactor(surface, size: (int, int)):
     sauce = pygame.transform.scale(load_image('sauce_on.png'), (WIDTH, HEIGHT))
     cheese = pygame.transform.scale(load_image('cheese_on.png'), (WIDTH, HEIGHT))
     tomato = pygame.transform.scale(load_image('tomato_on.png'), (WIDTH // 15, HEIGHT // 11.25))
+    pepper = pygame.transform.scale(load_image('pepper_on.png'), (WIDTH // 15, HEIGHT // 11.25))
+    onion = pygame.transform.scale(load_image('onion_on.png'), (WIDTH // 15, HEIGHT // 11.25))
+    masl = pygame.transform.scale(load_image('masl_on.png'), (WIDTH // 15, HEIGHT // 11.25))
     pepperoni = pygame.transform.scale(load_image('pepperoni_on.png'), (WIDTH // 15, HEIGHT // 11.25))
     bake = pygame.transform.scale(load_image('baking.png'), (WIDTH, HEIGHT))
 
@@ -112,6 +115,58 @@ def redactor(surface, size: (int, int)):
                             if event.type == pygame.KEYDOWN:
                                 if event.key == pygame.K_ESCAPE:
                                     return
+
+                if (WIDTH // 1.3544) <= event.pos[0] <= (WIDTH // 1.0309) and \
+                        (HEIGHT // 1.7045) <= event.pos[1] <= (HEIGHT // 1.2712) and SIXTH_LEVEL:
+                    new_running = True
+                    while new_running:
+                        for event in pygame.event.get():
+                            if event.type == pygame.QUIT:
+                                terminate()
+
+                            if event.type == pygame.MOUSEBUTTONDOWN and \
+                                    (event.pos[0] - centre[0]) ** 2 + (event.pos[1] - centre[1]) <= radius ** 2:
+                                surface.blit(pepper, event.pos)
+                                new_running = False
+
+                            if event.type == pygame.KEYDOWN:
+                                if event.key == pygame.K_ESCAPE:
+                                    return
+
+                if (WIDTH // 1.9449) <= event.pos[0] <= (WIDTH // 1.3793) and \
+                        (HEIGHT // 1.7408) <= event.pos[1] <= (HEIGHT // 1.257) and SEVENTH_LEVEL:
+                    new_running = True
+                    while new_running:
+                        for event in pygame.event.get():
+                            if event.type == pygame.QUIT:
+                                terminate()
+
+                            if event.type == pygame.MOUSEBUTTONDOWN and \
+                                    (event.pos[0] - centre[0]) ** 2 + (event.pos[1] - centre[1]) <= radius ** 2:
+                                surface.blit(onion, event.pos)
+                                new_running = False
+
+                            if event.type == pygame.KEYDOWN:
+                                if event.key == pygame.K_ESCAPE:
+                                    return
+
+                if (WIDTH // 1.5769) <= event.pos[0] <= (WIDTH // 1.0283) and \
+                        (HEIGHT // 1.2346) <= event.pos[1] <= (HEIGHT // 1.0477) and EIGHT_LEVEL:
+                    new_running = True
+                    while new_running:
+                        for event in pygame.event.get():
+                            if event.type == pygame.QUIT:
+                                terminate()
+
+                            if event.type == pygame.MOUSEBUTTONDOWN and \
+                                    (event.pos[0] - centre[0]) ** 2 + (event.pos[1] - centre[1]) <= radius ** 2:
+                                surface.blit(masl, event.pos)
+                                new_running = False
+
+                            if event.type == pygame.KEYDOWN:
+                                if event.key == pygame.K_ESCAPE:
+                                    return
+
 
         pygame.display.flip()
         clock.tick(FPS)
