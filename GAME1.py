@@ -123,7 +123,7 @@ while menu_running:
         level_map = load_level(levels[level])
 
         player, max_x, max_y, enemies, product, exit_new = generate_level(level_map, LEVEL_NOW)
-        play(screen, (1200, 900), player,
+        play(screen, (WIDTH, HEIGHT), player,
              camera, level_map, (max_x, max_y),
              enemies, product, exit_new, LEVEL_NOW)
 

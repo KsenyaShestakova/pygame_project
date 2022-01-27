@@ -92,7 +92,7 @@ def redactor(surface, size: (int, int)):
 
                             if event.type == pygame.MOUSEBUTTONDOWN and \
                                     (event.pos[0] - centre[0]) ** 2 + (event.pos[1] - centre[1]) <= radius ** 2:
-                                surface.blit(tomato, event.pos)
+                                surface.blit(tomato, (event.pos[0] - WIDTH // 30, event.pos[1] - HEIGHT // 22.5))
                                 new_running = False
 
                             if event.type == pygame.KEYDOWN:
@@ -109,7 +109,7 @@ def redactor(surface, size: (int, int)):
 
                             if event.type == pygame.MOUSEBUTTONDOWN and \
                                     (event.pos[0] - centre[0]) ** 2 + (event.pos[1] - centre[1]) <= radius ** 2:
-                                surface.blit(pepperoni, event.pos)
+                                surface.blit(pepperoni, (event.pos[0] - WIDTH // 30, event.pos[1] - HEIGHT // 22.5))
                                 new_running = False
 
                             if event.type == pygame.KEYDOWN:

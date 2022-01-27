@@ -2,6 +2,7 @@ import os.path
 
 import pygame
 
+from load_img import load_image
 from screens.SCREEN_dead import you_dead
 from screens.SCREEN_menu import change_is_open
 from game_func.end_level import end_lvl
@@ -15,7 +16,9 @@ from terminate import terminate
 def play(surface, size: (int, int), player, camera, level_map, max_s: (int, int), enemies, product, exit_new, lvl_now):
     running = True
     n = 0
+    gray_product = product.image
     while running:
+
         n += 1
         is_pressed = True
         for event in pygame.event.get():
@@ -66,5 +69,14 @@ def play(surface, size: (int, int), player, camera, level_map, max_s: (int, int)
         player_group.draw(surface)
         enemy_group.draw(surface)
         products_group.draw(surface)
+        surface.blit(gray_product, (size[0] - size[0] // 12, size[1] // 30))
+        if not player.product:
+            font = pygame.font.SysFont('arial', size[1] // 45)
+            text = font.render('Найдите продукт:', True, 'black')
+            surface.blit(text, (size[0] - 1.5 * size[0] // 12, 0))
+        else:
+            font = pygame.font.SysFont('arial', size[1] // 45)
+            text = font.render('Продукт найден!', True, 'black')
+            surface.blit(text, (size[0] - 1.5 * size[0] // 12, 0))
         pygame.display.flip()
         clock.tick(FPS)
