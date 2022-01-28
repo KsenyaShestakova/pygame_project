@@ -5,6 +5,7 @@ import pygame
 from classes.CLASS_product import Product
 from classes.CLASS_enemy import Enemy
 from classes.CLASS_exit_lvl import ExitLevel
+from screens.SCREEN_instruction import instruction
 from screens.SCREEN_menu import new_game, game
 from screens.SCREEN_redactor import redactor
 from py_files.file_with_sprite_groups import tiles_group, levels_sprites, player_group
@@ -103,6 +104,7 @@ pygame.init()
 pygame.display.set_caption('Pizza')
 camera = Camera()
 
+instruction(screen)
 if start_screen(screen) == 'new game':
     new_game(os.path.join('game_func', 'open_levels.txt'))
     story(screen)
