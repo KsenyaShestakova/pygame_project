@@ -23,4 +23,4 @@ def box(filename, endname):
     res.save(endname)
 
 
-box('save_btn.jpg', 'save_btn_change.jpg')
+box('buttons/razr_800_600.png', 'buttons/razr_800_600_change.png')
