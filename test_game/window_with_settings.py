@@ -9,13 +9,18 @@ from terminate import terminate
 
 def window_with_settings(surface):
     surface.blit(pygame.transform.scale(load_image('fon_change.png'), (WIDTH, HEIGHT)), (0, 0))
-    save_btn = Buttons('save_btn.jpg', WIDTH // 12 * 3, HEIGHT // 9 * 6, WIDTH // 4, HEIGHT // 12)
-    return_btn = Buttons('save_btn.jpg', WIDTH // 12 * 6, HEIGHT // 9 * 6, WIDTH // 4, HEIGHT // 12)
+    save_btn = Buttons('save_btn.jpg', WIDTH // 4.28, HEIGHT // 1.52, WIDTH // 4, HEIGHT // 12)
+    return_btn = Buttons('save_btn.jpg', WIDTH // 1.97, HEIGHT // 1.52, WIDTH // 4, HEIGHT // 12)
     save_btn.add(settings_spr)
     return_btn.add(settings_spr)
 
-    btn_1200_900 = Buttons('save_btn.jpg', WIDTH // 12 * 6, HEIGHT // 7 * 2, WIDTH // 4, HEIGHT // 12)
+    btn_1200_900 = Buttons('save_btn.jpg', WIDTH // 4.28, HEIGHT // 3.31, WIDTH // 4, HEIGHT // 12)
+    btn_1000_750 = Buttons('save_btn.jpg', WIDTH // 4.28, HEIGHT // 2.41, WIDTH // 4, HEIGHT // 12)
+    btn_800_600 = Buttons('save_btn.jpg', WIDTH // 4.28, HEIGHT // 1.89, WIDTH // 4, HEIGHT // 12)
     btn_1200_900.add(settings_spr)
+    btn_1000_750.add(settings_spr)
+    btn_800_600.add(settings_spr)
+
     fon = pygame.transform.scale(load_image('settings.png'), (WIDTH // 5 * 3, HEIGHT // 5 * 3))
     surface.blit(fon, (WIDTH // 5, HEIGHT // 5))
 
@@ -26,12 +31,18 @@ def window_with_settings(surface):
                 terminate()
 
             elif event.type == pygame.KEYDOWN:
-                if event.key == pygame.K_ESCAPE or return_btn.is_clicked:
+                if event.key == pygame.K_ESCAPE:
                     for el in settings_spr:
                         el.kill()
                     return
                 elif event.key == pygame.K_KP_ENTER:
                     save()
+
+            if event.type == pygame.MOUSEBUTTONDOWN:
+                if return_btn.is_clicked:
+                    for el in settings_spr:
+                        el.kill()
+                    return
 
         settings_spr.draw(surface)
         pygame.display.flip()
