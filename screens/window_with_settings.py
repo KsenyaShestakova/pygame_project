@@ -49,6 +49,9 @@ def window_with_settings(surface):
             if event.type == pygame.MOUSEBUTTONDOWN:
                 if return_btn.is_clicked:
                     save(OLD_SIZE, 'window_size.txt', 'py_files')
+                    for el in settings_spr:
+                        if el.is_clicked:
+                            el.is_clicked = False
 
                 if save_btn.is_clicked:
                     save_btn.is_clicked = False
