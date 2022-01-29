@@ -4,26 +4,26 @@ import pygame
 
 from classes.buttons import Buttons
 from py_files.file_with_const import WIDTH, HEIGHT, clock, FPS, get_size
-from py_files.file_with_sprite_groups import settings_spr, all_sprites
+from py_files.file_with_sprite_groups import settings_spr
 from load_img import load_image
 from terminate import terminate
 
 
 def window_with_settings(surface):
     surface.blit(pygame.transform.scale(load_image('fon_change.png'), (WIDTH, HEIGHT)), (0, 0))
-    save_btn = Buttons('razr_btn.png', WIDTH // 4.28, HEIGHT // 1.52, WIDTH // 4, HEIGHT // 12, text='Сохранить')
-    return_btn = Buttons('razr_btn.png', WIDTH // 1.97, HEIGHT // 1.52, WIDTH // 4, HEIGHT // 12, text='Отмена')
+    save_btn = Buttons('BUTTON_settings_load_up.png', WIDTH // 4.28, HEIGHT // 1.52, WIDTH // 4, HEIGHT // 12)
+    return_btn = Buttons('BUTTON_settings_cancel.png', WIDTH // 1.97, HEIGHT // 1.52, WIDTH // 4, HEIGHT // 12)
     save_btn.add(settings_spr)
     return_btn.add(settings_spr)
 
-    btn_1200_900 = Buttons('razr_btn.png', WIDTH // 4.28, HEIGHT // 3.31, WIDTH // 4, HEIGHT // 12, text='1200*900')
-    btn_1000_750 = Buttons('razr_btn.png', WIDTH // 4.28, HEIGHT // 2.41, WIDTH // 4, HEIGHT // 12, text='1000*750')
-    btn_800_600 = Buttons('razr_btn.png', WIDTH // 4.28, HEIGHT // 1.89, WIDTH // 4, HEIGHT // 12, text='800*600')
+    btn_1200_900 = Buttons('BUTTON_settings_razr_1200.png', WIDTH // 4.28, HEIGHT // 3.31, WIDTH // 4, HEIGHT // 12, text='1200*900')
+    btn_1000_750 = Buttons('BUTTON_settings_razr_1000.png', WIDTH // 4.28, HEIGHT // 2.41, WIDTH // 4, HEIGHT // 12, text='1000*750')
+    btn_800_600 = Buttons('BUTTON_settings_razr_800.png', WIDTH // 4.28, HEIGHT // 1.89, WIDTH // 4, HEIGHT // 12, text='800*600')
     btn_1200_900.add(settings_spr)
     btn_1000_750.add(settings_spr)
     btn_800_600.add(settings_spr)
 
-    fon = pygame.transform.scale(load_image('settings.png'), (WIDTH // 5 * 3, HEIGHT // 5 * 3))
+    fon = pygame.transform.scale(load_image('settings_window.png'), (WIDTH // 5 * 3, HEIGHT // 5 * 3))
     surface.blit(fon, (WIDTH // 5, HEIGHT // 5))
 
     OLD_SIZE = str(' '.join(map(str, get_size(os.path.join('py_files', 'window_size.txt')))))
@@ -61,9 +61,7 @@ def window_with_settings(surface):
                             save(el.text, 'window_size.txt', 'py_files')
 
         settings_spr.draw(surface)
-        print_text(surface)
-        for el in settings_spr:
-            el.draw_text(surface, 'white', size_sh=HEIGHT // 20)
+
         pygame.display.flip()
         clock.tick(FPS)
 
@@ -71,7 +69,6 @@ def window_with_settings(surface):
 def save(size: str, filename, papka=None):
     size = size.replace('*', ' ')
     if papka:
-        print(size)
         filename = os.path.join(papka, filename)
     with open(filename, 'w') as file:
         file.write(size)
