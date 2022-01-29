@@ -20,15 +20,18 @@ class Buttons(pygame.sprite.Sprite):
         self.change_img = pygame.transform.scale(self.change_img, (self.width, self.height))
         self.old_img = pygame.transform.scale(self.image_load, (self.width, self.height))
 
-    def draw_text(self, surface, color='black', x=None, y=None):
+    def draw_text(self, surface, color='black', x=None, y=None, size_sh=None):
         if self.text != '':
-            font = pygame.font.SysFont('arial', int(self.width // 3))
+            if size_sh:
+                font = pygame.font.SysFont('arial', int(size_sh))
+            else:
+                font = pygame.font.SysFont('arial', int(self.height // 3))
             text = font.render(self.text, True, color)
             if x and y:
                 surface.blit(text, (x, y))
             else:
                 text_x = self.x + self.width // 2 - self.width // 13
-                text_y = self.y + self.width // 2 - self.height // 7
+                text_y = self.y + self.height // 2 - self.height // 7
                 surface.blit(text, (text_x, text_y))
 
     def update(self, *args):
