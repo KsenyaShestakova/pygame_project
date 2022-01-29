@@ -37,6 +37,7 @@ def redactor(surface, size: (int, int)):
     pepperoni = pygame.transform.scale(load_image('pepperoni_on.png'), (WIDTH // 15, HEIGHT // 11.25))
     bake = pygame.transform.scale(load_image('baking.png'), (WIDTH, HEIGHT))
 
+
     centre = (WIDTH // 60 + (WIDTH // 2.087) // 2, HEIGHT // 5 + (HEIGHT // 1.6981) // 2)
     radius = WIDTH // 4.1667
     surface.blit(fon, (0, 0))
@@ -126,7 +127,7 @@ def redactor(surface, size: (int, int)):
 
                             if event.type == pygame.MOUSEBUTTONDOWN and \
                                     (event.pos[0] - centre[0]) ** 2 + (event.pos[1] - centre[1]) <= radius ** 2:
-                                surface.blit(pepper, event.pos)
+                                surface.blit(pepper, (event.pos[0] - WIDTH // 30, event.pos[1] - HEIGHT // 22.5))
                                 new_running = False
 
                             if event.type == pygame.KEYDOWN:
@@ -143,7 +144,7 @@ def redactor(surface, size: (int, int)):
 
                             if event.type == pygame.MOUSEBUTTONDOWN and \
                                     (event.pos[0] - centre[0]) ** 2 + (event.pos[1] - centre[1]) <= radius ** 2:
-                                surface.blit(onion, event.pos)
+                                surface.blit(onion, (event.pos[0] - WIDTH // 30, event.pos[1] - HEIGHT // 22.5))
                                 new_running = False
 
                             if event.type == pygame.KEYDOWN:
@@ -160,7 +161,7 @@ def redactor(surface, size: (int, int)):
 
                             if event.type == pygame.MOUSEBUTTONDOWN and \
                                     (event.pos[0] - centre[0]) ** 2 + (event.pos[1] - centre[1]) <= radius ** 2:
-                                surface.blit(masl, event.pos)
+                                surface.blit(masl, (event.pos[0] - WIDTH // 30, event.pos[1] - HEIGHT // 22.5))
                                 new_running = False
 
                             if event.type == pygame.KEYDOWN:
